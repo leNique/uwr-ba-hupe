@@ -26,6 +26,14 @@ void SetupKnoepfe()
                         TimerHalbzeitPause = HalbzeitPause;
                         Start = Start + TimerSpielzeit * 1000;
                         Stop = millis();
+
+                        for (int i=0; i<6; i++)
+                        {Strafzeiten[i]=0;}
+                        warHalbzeitPause=0;
+                        istHalbzeitPause=0;
+                        istStrafwurf=0;
+                        StrafwurfStop=0;
+
                         lc.setChar(0, 7, (TimerSpielzeit / 60) / 10, false); //1. Led
                         lc.setChar(0, 6, (TimerSpielzeit / 60) % 10, false); //2. Led
                         lc.setChar(0, 5, (TimerSpielzeit % 60) / 10, false); //3. Led
@@ -116,7 +124,6 @@ void SetupKnoepfe()
         if (Setup == 0)
         {
                 lc.setRow(0, 7, B01011011); //  Punkt dann beginntend oben im Uhrzeigersinn
-                //lc.setChar(0, 6, 'e', false); //2. Led
                 lc.setChar(0, 6, 'e', false); //2. Led
                 lc.setRow(0, 5, B00001111); //3. Led
                 lc.setRow(0, 4, B00111110); //4. Led
@@ -129,6 +136,7 @@ void SetupKnoepfe()
                 {Strafzeiten[i] = 0;}
                 StrafwurfTimer = 0; // Strafwurf löschen falls vorhanden
                 istStrafwurf = 0;
+                durchlaufendeZeitStop = 1; // Spiel mit durchlaufender Zeit anhalten
         }
 
         if (Setup == 1)
