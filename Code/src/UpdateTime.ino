@@ -122,7 +122,7 @@ void UpdateTime()
                 lc.setChar(0, 5, (TimerHalbzeitPause % 60) / 10, false); //3. Led
                 lc.setChar(0, 4, (TimerHalbzeitPause % 60) % 10, false); //4. Led
 
-                if (TimerHalbzeitPause==0)
+                if (TimerHalbzeitPause==0)                                             // Die Halbzeit ist zu ende - Fertig machen für Spielbeginn
                 {
                         StartTimerHalbzeitPause=0;
                         TimerHalbzeitPause=HalbzeitPause;

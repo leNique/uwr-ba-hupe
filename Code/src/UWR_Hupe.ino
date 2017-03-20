@@ -1,9 +1,3 @@
-/*
-Herz der UWR-BA Hupe
-beinhaltet setup()- und loop()-Funktion
-*/
-
-
 #include "LedControl.h" //  need the library
 #include <SoftwareSerial.h>// import the serial library
 #include "constants.h"
@@ -47,6 +41,17 @@ byte Setup = SetupStateHome; //Setup=SetupStateHome -> Setup beginnt
 //Setup=SetupStateHalbzeitPause          -> Dauer der Halbzeitpause  E
 //Setup=SetupStateMax                    -> Startbereit
 
+byte Status = 0;  // Akuteller Zustand des Spieles                       Status hat im Moment keine funktion - evtl. besser aber vieleicht auch nicht....
+// Status=0  -> Spiel hat noch nicht begonnen
+// Status=1  -> Spiel läuft normal
+// Status=2  -> Spiel gestoppt
+// Status=3  -> Halbzeitpause
+// Status=20 -> Strafwurf ist gewählt - Uhr steht
+// Status=21 -> Strafwurf ist gewählt - Uhr läuft
+// Status=1 ->
+// Status=1 ->
+// Status=1 ->
+
 bool Reset = 0;
 bool durchlaufendeZeitStop = 0;
 bool StrafwurfStop = 0;
@@ -65,14 +70,18 @@ int Strafzeiten[] = {0, 0, 0, 0, 0, 0};
 int kleinsteStrafzeit;
 int AnzahlStrafzeiten = 0;
 
+bool warHalbzeitPause=0;   // Zähler ob Halbzeit schon war oder noch erste Spielhälfte läuft
 bool istHalbzeitPause=0;
 unsigned long TimerHalbzeitPause=0;
 unsigned long StartTimerHalbzeitPause=0;
 
-// Bluethooth Variablen
 char BluetoothBuffer[4];
 char BluetoothTrennzeichen[]=";";
 char BluetoothString[33];
+
+
+
+
 
 void setup()
 {
@@ -100,7 +109,11 @@ void setup()
 
 }
 
-/* loop(): Hauptcode steht in dieser Funktion - wird immer wieder ausgeführt */
+
+
+
+
+
 void loop()
 {
         // Setup - Startprogramm
@@ -110,21 +123,26 @@ void loop()
         }
         // Setup Abgeschlossen - Spiel kann beginnen
 
-        // Abfrage der Knöpfe an der Hupe
-        Knoepfe();
 
-        // Checke, ob automatische abgehupt werden muss
-        AutomatischHupen ();
+        Knoepfe();                            //Knöpfe an der Hupe werden abgefragt
+        AutomatischHupen ();                  // falls automatisch gehupt werden muss wird das gemacht
 
-        // Checke, ob Spiel zu Ende ist --> Abhupen, evtl. Halbzeit und reset
-        if (TimerSpielzeit <= 0)
+        if (TimerSpielzeit <= 0)                         // Spiel zu ende - Abhupen, evtl. Halbzeit und reset
         {
                 durchlaufendeZeitStop = 1; //Werte zurücksetzen
                 TimerSpielzeit = Spieldauer;
                 Stop = 1;
                 nachSpielZeit = 0;
-                for (int i=0; i<6; i++)
-                {Strafzeiten[i]=0;}
+                 if (warHalbzeitPause==0)     // Strafzeiten nur löschen falls 2. Spielhälfte
+                 {
+                   for (int i=0; i<6; i++)
+                   {Strafzeiten[i]=0;}
+                   warHalbzeitPause=1;
+                 }
+                 else
+                 {
+                   warHalbzeitPause=0;
+                 }      // 2. Spielhälfte - neues Spiel beginnt
 
                 if (StartTimerHalbzeitPause==0 && istHalbzeitPause==0)
                 {
@@ -135,25 +153,30 @@ void loop()
 
                 langesHupen=1;       //Abhupen
 
-        }
-        // Spiel zu ende - Abhupen und reset
+        }                                            // Spiel zu ende - Abhupen und reset
 
-        // Aktualisieren der Zeitanzeige
-        UpdateTime();
+        UpdateTime();                           // Anzeige akualisieren
 
-        // Bei gedrücktem Knopf: lasse Hupe hupen
-        if ((digitalRead(PinDrueckerSpielleiter) == 0 || digitalRead(PinDrueckerUW1) == 0 || digitalRead(PinDrueckerUW2) == 0))
+        //if ((digitalRead(2) == 0 && LangesHupenStatus[1]==0 && LangesHupenStatus[2]==0 && HupStatus[1]==0 && HupStatus[2]==0)||( digitalRead(3) == 0 && LangesHupenStatus[0]==0 && LangesHupenStatus[2]==0 && HupStatus[0]==0 && HupStatus[2]==0) || ( digitalRead(4) == 0 && LangesHupenStatus[1]==0 && LangesHupenStatus[0]==0 && HupStatus[1]==0 && HupStatus[0]==0)) // Hupe hupen lassen bei drücken eines Knopfes
+        //if ((digitalRead(2) == 0 )||( digitalRead(3) == 0 ) || ( digitalRead(4) == 0 )) // Hupe hupen lassen bei drücken eines Knopfes
+        if (digitalRead(PinDrueckerSpielleiter) == 0 && HupStatus[1] < 2 && HupStatus[2] < 2)
         {
-                digitalWrite(PinHorn, LOW);
-        }
+          digitalWrite(PinHorn, LOW);
+          lc.setChar(0, 2,'a', false);}
+        else if ( digitalRead(PinDrueckerUW1) == 0 && HupStatus[0] < 2 && HupStatus[2] < 2)
+        {
+          digitalWrite(PinHorn, LOW);
+          lc.setChar(0, 2,'b', false);}
+        else if ( digitalRead(PinDrueckerUW2) == 0 && HupStatus[1] < 2 && HupStatus[0] < 2)
+        {
+          digitalWrite(PinHorn, LOW);
+          lc.setChar(0, 2,'c', false);}
         else if (langesHupen==0 && kurzesHupen==0)
         {
                 digitalWrite(PinHorn, HIGH);
-        }
-        // Hupe hupen lassen bei Drücken eines Knopfes
+        }                                                               // Hupe hupen lassen bei drücken eines Knopfes
 
-        // Während Spiel: Suche nach Abhup-Signal (zwei kurze Hupsignale)
-        if (Stop == 0 && istHalbzeitPause==0)
+        if (Stop == 0 && istHalbzeitPause==0)                      // Wenn Spiel läuft Abhupen suchen (zwei kurze Hupsignale)
         {
                 ZweiSignale(0, digitalRead(PinDrueckerSpielleiter));
                 ZweiSignale(1, digitalRead(PinDrueckerUW1));
@@ -161,13 +184,12 @@ void loop()
         }
         // Wenn Spiel läuft, Abhupen suchen (zwei kurze Hupsignale)
 
-        // Gestopptes/noch nicht begonnenes Spiel/bei durchlaufender Zeit (Strafwurf beginnt): Suche langes Hupen
-        if ((Stop != 0 || DurchlaufendeSpielzeit==1) && istHalbzeitPause==0)
+
+        if ((Stop != 0 || DurchlaufendeSpielzeit==1) && istHalbzeitPause==0)              // Wenn nicht Spiel läuft oder durchlaufende Spielzeit(Strafwurf beginnt) langes Hupen suchen
         {
                 LangesSignal(0, digitalRead(PinDrueckerSpielleiter));
                 LangesSignal(1, digitalRead(PinDrueckerUW1));
                 LangesSignal(2, digitalRead(PinDrueckerUW2));
         }
         // Wenn nicht Spiel läuft langes Hupen suchen
-
 }

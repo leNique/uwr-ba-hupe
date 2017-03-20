@@ -9,15 +9,15 @@ void Knoepfe ()
         }
         if (Knopf1Timer + 2000 < millis())    // nach 2 Sekunden ResetModus beenden
         {
+                if (Reset==1)
+                {
+                        lc.setChar(0, 7, (TimerSpielzeit / 60) / 10, false); //1. Led
+                        lc.setChar(0, 6, (TimerSpielzeit / 60) % 10, false); //2. Led
+                        lc.setChar(0, 5, (TimerSpielzeit % 60) / 10, false); //3. Led
+                        lc.setChar(0, 4, (TimerSpielzeit % 60) % 10, false); //4. Led
+                        lc.setChar(0, 3, ' ', false); //5. Led
+                }
                 Reset = 0;
-        }
-        if (Knopf1Timer + 1800 < millis() && Reset == 1) // kurz vor ablauf der 2 Sekunden Anzeige des ResetModus beenden
-        {
-                lc.setChar(0, 7, (TimerSpielzeit / 60) / 10, false); //1. Led
-                lc.setChar(0, 6, (TimerSpielzeit / 60) % 10, false); //2. Led
-                lc.setChar(0, 5, (TimerSpielzeit % 60) / 10, false); //3. Led
-                lc.setChar(0, 4, (TimerSpielzeit % 60) % 10, false); //4. Led
-                lc.setChar(0, 3, ' ', false); //5. Led
         }
 
         if (Reset == 1)
