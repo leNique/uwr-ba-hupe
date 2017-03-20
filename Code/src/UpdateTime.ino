@@ -155,9 +155,4 @@ void UpdateTime()
                         Bluetooth.println(BluetoothString);
                 }
         }
-
-
-
-
-
 }

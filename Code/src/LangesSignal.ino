@@ -2,7 +2,6 @@ void LangesSignal (int i, bool val)
 {
         if ((Stop != 0 && Stop+2000<millis())|| DurchlaufendeSpielzeit == 1)    //nur ausführen wenn Zeit schon 2 Sec steht oder durchlaufende Zeit
         {
-
                 if (val == 0 && LangesHupenStatus[i] == 0)
                 {
                         TimerLangesHupen[i] = millis();

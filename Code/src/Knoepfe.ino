@@ -1,6 +1,8 @@
+#include "constants.h"
+
 void Knoepfe ()
 {
-        if (digitalRead(14) == 0 && Knopf1Timer < millis() - 1000) // Reset initalisieren
+        if (digitalRead(PinButtonReset) == 0 && Knopf1Timer < millis() - 1000) // Reset initalisieren
         {
                 Knopf1Timer = millis();
                 Reset = 1;
@@ -20,6 +22,7 @@ void Knoepfe ()
 
         if (Reset == 1)
         {
+                // Anzeige "Reset"
                 lc.setRow(0, 7, B00000101); //  Punkt dann beginntend oben im Uhrzeigersinn
                 lc.setChar(0, 6, 'e', false); //2. Led
                 lc.setRow(0, 5, B01011011); //3. Led
@@ -29,19 +32,17 @@ void Knoepfe ()
 
 
 
-        if (digitalRead(15) == 0 && Knopf2Timer < millis() - 1000) // Reset / Strafwurf
+        if (digitalRead(PinButtonSetup) == 0 && Knopf2Timer < millis() - 1000) // Reset / Strafwurf
         {
                 Knopf2Timer = millis();
 
                 if (Reset == 1)                             // Reset tatsächlich auslösen
                 {
-                        Setup = 0;
-
+                        Setup = SetupStateHome;
                 }
 
                 if (Stop != 0 || DurchlaufendeSpielzeit == 1)                           //Strafwurf
                 {
-
                         if (istStrafwurf == 1)
                         {
                                 StrafwurfTimer = 0;
@@ -67,12 +68,10 @@ void Knoepfe ()
                                 lc.setChar(0, 1, StrafwurfTimer / 10, false); //7. Led
                                 lc.setChar(0, 0, StrafwurfTimer % 10, false); //8. Led
                         }
-
                 }
-
         }
 
-        if (digitalRead(16) == 0 && Knopf3Timer < millis() - 1000) //Strafzeit
+        if (digitalRead(PinButtonPlus) == 0 && Knopf3Timer < millis() - 1000) //Strafzeit
         {
                 Knopf3Timer = millis();
                 for (int i = 0; i < 6; i++)
@@ -95,7 +94,7 @@ void Knoepfe ()
                 }
         }
 
-        if (digitalRead(17) == 0 && Knopf4Timer < millis() - 800)
+        if (digitalRead(PinButtonMinus) == 0 && Knopf4Timer < millis() - 800)
         {
                 Knopf4Timer = millis();
 
@@ -145,8 +144,5 @@ void Knoepfe ()
                         }
 
                 }
-
-        } //Ende Knopf4
-
-
+        } //Ende ButtonMinus
 }

@@ -1,5 +1,7 @@
 #include "LedControl.h" //  need the library
 #include <SoftwareSerial.h>// import the serial library
+#include "constants.h"
+
 SoftwareSerial Bluetooth(9, 8); // RX, TX
 LedControl lc = LedControl(12, 11, 10, 1); //
 // pin 12 is connected to DOUT
@@ -31,13 +33,13 @@ byte Knopf3beschleuniger = 0;
 byte Knopf4beschleuniger = 0;
 int beschleunigerSchrittweite[] = {0, 1, 2, 5, 10, 30, 60};
 
-byte Setup = 0; //Setup=0->Setup beginnt
-//Setup=1->Spielzeit einstellen     A
-//Setup=2->Strafzeit einstellen     B
-//Setup=3->Strafwurfzeit einstellen C
-//Setup=4->durchlaufen Zeit?        D
-//Setup=5->Halbzeitpause            E
-//Setup=6->Startbereit
+byte Setup = SetupStateHome; //Setup=SetupStateHome -> Setup beginnt
+//Setup=SetupStateSpieldauer             -> Spielzeit einstellen     A
+//Setup=SetupStateStrafzeit              -> Strafzeit einstellen     B
+//Setup=SetupStateStrafwurf              -> Strafwurfzeit einstellen C
+//Setup=SetupStateDurchlaufendeSpielzeit -> durchlaufen Zeit?        D
+//Setup=SetupStateHalbzeitPause          -> Dauer der Halbzeitpause  E
+//Setup=SetupStateMax                    -> Startbereit
 
 byte Status = 0;  // Akuteller Zustand des Spieles                       Status hat im Moment keine funktion - evtl. besser aber vieleicht auch nicht....
 // Status=0  -> Spiel hat noch nicht begonnen
@@ -98,12 +100,12 @@ void setup()
         pinMode(2, INPUT);     // set pin to input
         pinMode(3, INPUT);     // set pin to input
         pinMode(4, INPUT);     // set pin to input
-        pinMode(5, OUTPUT);   // Hupe
-        digitalWrite(5, HIGH);
-        pinMode(14, INPUT_PULLUP); //Knopf1
-        pinMode(15, INPUT_PULLUP); //Knopf2
-        pinMode(16, INPUT_PULLUP); //Knopf3
-        pinMode(17, INPUT_PULLUP); //Knopf4
+        pinMode(PinHorn, OUTPUT);   // Hupe
+        digitalWrite(PinHorn, HIGH);
+        pinMode(PinButtonReset, INPUT_PULLUP); //Knopf1
+        pinMode(PinButtonSetup, INPUT_PULLUP); //Knopf2
+        pinMode(PinButtonPlus, INPUT_PULLUP); //Knopf3
+        pinMode(PinButtonMinus, INPUT_PULLUP); //Knopf4
 
 }
 
@@ -114,8 +116,8 @@ void setup()
 
 void loop()
 {
-        // put your main code here, to run repeatedly:
-        while (Setup < 6)                           //Setup - Startprogramm
+        // Setup - Startprogramm
+        while (Setup < SetupStateMax)
         {
                 SetupKnoepfe();
         }
@@ -155,37 +157,39 @@ void loop()
 
         UpdateTime();                           // Anzeige akualisieren
 
-
         //if ((digitalRead(2) == 0 && LangesHupenStatus[1]==0 && LangesHupenStatus[2]==0 && HupStatus[1]==0 && HupStatus[2]==0)||( digitalRead(3) == 0 && LangesHupenStatus[0]==0 && LangesHupenStatus[2]==0 && HupStatus[0]==0 && HupStatus[2]==0) || ( digitalRead(4) == 0 && LangesHupenStatus[1]==0 && LangesHupenStatus[0]==0 && HupStatus[1]==0 && HupStatus[0]==0)) // Hupe hupen lassen bei drücken eines Knopfes
         //if ((digitalRead(2) == 0 )||( digitalRead(3) == 0 ) || ( digitalRead(4) == 0 )) // Hupe hupen lassen bei drücken eines Knopfes
-        if (digitalRead(2) == 0 && HupStatus[1] < 2 && HupStatus[2] < 2)
-        {digitalWrite(5, LOW);
+        if (digitalRead(PinDrueckerSpielleiter) == 0 && HupStatus[1] < 2 && HupStatus[2] < 2)
+        {
+          digitalWrite(PinHorn, LOW);
           lc.setChar(0, 2,'a', false);}
-        else if ( digitalRead(3) == 0 && HupStatus[0] < 2 && HupStatus[2] < 2)
-        {digitalWrite(5, LOW);
+        else if ( digitalRead(PinDrueckerUW1) == 0 && HupStatus[0] < 2 && HupStatus[2] < 2)
+        {
+          digitalWrite(PinHorn, LOW);
           lc.setChar(0, 2,'b', false);}
-        else if ( digitalRead(4) == 0 && HupStatus[1] < 2 && HupStatus[0] < 2)
-        {digitalWrite(5, LOW);
+        else if ( digitalRead(PinDrueckerUW2) == 0 && HupStatus[1] < 2 && HupStatus[0] < 2)
+        {
+          digitalWrite(PinHorn, LOW);
           lc.setChar(0, 2,'c', false);}
         else if (langesHupen==0 && kurzesHupen==0)
         {
-                digitalWrite(5, HIGH);
+                digitalWrite(PinHorn, HIGH);
         }                                                               // Hupe hupen lassen bei drücken eines Knopfes
-
-
 
         if (Stop == 0 && istHalbzeitPause==0)                      // Wenn Spiel läuft Abhupen suchen (zwei kurze Hupsignale)
         {
-                ZweiSignale(0, digitalRead(2));
-                ZweiSignale(1, digitalRead(3));
-                ZweiSignale(2, digitalRead(4));
-        }                                 // Wenn Spiel läuft Abhupen suchen (zwei kurze Hupsignale)
+                ZweiSignale(0, digitalRead(PinDrueckerSpielleiter));
+                ZweiSignale(1, digitalRead(PinDrueckerUW1));
+                ZweiSignale(2, digitalRead(PinDrueckerUW2));
+        }
+        // Wenn Spiel läuft, Abhupen suchen (zwei kurze Hupsignale)
+
 
         if ((Stop != 0 || DurchlaufendeSpielzeit==1) && istHalbzeitPause==0)              // Wenn nicht Spiel läuft oder durchlaufende Spielzeit(Strafwurf beginnt) langes Hupen suchen
         {
-                LangesSignal(0, digitalRead(2));
-                LangesSignal(1, digitalRead(3));
-                LangesSignal(2, digitalRead(4));
-        }                                // Wenn nicht Spiel läuft langes Hupen suchen
-
+                LangesSignal(0, digitalRead(PinDrueckerSpielleiter));
+                LangesSignal(1, digitalRead(PinDrueckerUW1));
+                LangesSignal(2, digitalRead(PinDrueckerUW2));
+        }
+        // Wenn nicht Spiel läuft langes Hupen suchen
 }
