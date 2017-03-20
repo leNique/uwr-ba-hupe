@@ -1,25 +1,27 @@
+#include "constants.h"
+
 void SetupKnoepfe()
 {
 
-        if (digitalRead(14) == 0 && Knopf1Timer < millis() - 500) // Reset initalisieren
+        if (digitalRead(PinButtonReset) == 0 && Knopf1Timer < millis() - 500) // Reset initalisieren
         {
                 Knopf1Timer = millis();
                 Setup = 0;
         }
 
 
-        if (digitalRead(15) == 0 && Knopf2Timer < millis() - 500)
+        if (digitalRead(PinButtonSetup) == 0 && Knopf2Timer < millis() - 500)
         {
                 Knopf2Timer = millis();
 
-                if (Setup < 6)                 //Setup fortführen
+                if (Setup < SetupStateMax)                 //Setup fortführen
                 {
                         Setup++;
                         Knopf3beschleuniger = 0;
                         Knopf4beschleuniger = 0;
                 }
 
-                if (Setup == 6)              //Setup fertig - Spiel bereit - Uhr angehalten
+                if (Setup == SetupStateMax)              //Setup fertig - Spiel bereit - Uhr angehalten
                 {
                         Start = millis();
                         TimerSpielzeit = Spieldauer;
@@ -36,7 +38,7 @@ void SetupKnoepfe()
 
         }
 
-        if (digitalRead(16) == 0 && Knopf3Timer < millis() - 500)
+        if (digitalRead(PinButtonPlus) == 0 && Knopf3Timer < millis() - 500)
         {
                 Knopf3Timer = millis();
                 if (Knopf3beschleuniger < 6)
@@ -44,24 +46,24 @@ void SetupKnoepfe()
                         Knopf3beschleuniger++;
                 }
 
-                if (Setup == 1)
+                if (Setup == SetupStateSpieldauer)
                 {
                         Spieldauer = Spieldauer + beschleunigerSchrittweite[Knopf3beschleuniger];
                 }
-                if (Setup == 2)
+                if (Setup == SetupStateStrafzeit)
                 {
                         Strafzeit = Strafzeit + beschleunigerSchrittweite[Knopf3beschleuniger];
                 }
-                if (Setup == 3)
+                if (Setup == SetupStateStrafwurf)
                 {
                         Strafwurf = Strafwurf + beschleunigerSchrittweite[Knopf3beschleuniger];
                 }
-                if (Setup == 4)
+                if (Setup == SetupStateDurchlaufendeSpielzeit)
                 {
                         DurchlaufendeSpielzeit = 1;
                         durchlaufendeZeitStop = 1;
                 }
-                if (Setup == 5)
+                if (Setup == SetupStateHalbzeitPause)
                 {
                         HalbzeitPause = HalbzeitPause + beschleunigerSchrittweite[Knopf3beschleuniger];
                 }
@@ -72,7 +74,7 @@ void SetupKnoepfe()
                 Knopf3beschleuniger = 0;
         }
 
-        if (digitalRead(17) == 0 && Knopf4Timer < millis() - 500)
+        if (digitalRead(PinButtonMinus) == 0 && Knopf4Timer < millis() - 500)
         {
                 Knopf4Timer = millis();
                 if (Knopf4beschleuniger < 6)
@@ -80,24 +82,24 @@ void SetupKnoepfe()
                         Knopf4beschleuniger++;
                 }
 
-                if (Setup == 1 && Spieldauer - beschleunigerSchrittweite[Knopf4beschleuniger] > 0)
+                if (Setup == SetupStateSpieldauer && Spieldauer - beschleunigerSchrittweite[Knopf4beschleuniger] > 0)
                 {
                         Spieldauer = Spieldauer - beschleunigerSchrittweite[Knopf4beschleuniger];
                 }
-                if (Setup == 2 && Strafzeit - beschleunigerSchrittweite[Knopf4beschleuniger] > 0)
+                if (Setup == SetupStateStrafzeit && Strafzeit - beschleunigerSchrittweite[Knopf4beschleuniger] > 0)
                 {
                         Strafzeit = Strafzeit - beschleunigerSchrittweite[Knopf4beschleuniger];
                 }
-                if (Setup == 3 && Strafwurf - beschleunigerSchrittweite[Knopf4beschleuniger] > 0)
+                if (Setup == SetupStateStrafwurf && Strafwurf - beschleunigerSchrittweite[Knopf4beschleuniger] > 0)
                 {
                         Strafwurf = Strafwurf - beschleunigerSchrittweite[Knopf4beschleuniger];
                 }
-                if (Setup == 4)
+                if (Setup == SetupStateDurchlaufendeSpielzeit)
                 {
                         DurchlaufendeSpielzeit = 0;
                         durchlaufendeZeitStop = 0;
                 }
-                if (Setup == 5 && HalbzeitPause - beschleunigerSchrittweite[Knopf4beschleuniger] > 0)
+                if (Setup == SetupStateHalbzeitPause && HalbzeitPause - beschleunigerSchrittweite[Knopf4beschleuniger] > 0)
                 {
                         HalbzeitPause = HalbzeitPause - beschleunigerSchrittweite[Knopf4beschleuniger];
                 }
@@ -113,8 +115,9 @@ void SetupKnoepfe()
 
 
         //Anzeige Setup
-        if (Setup == 0)
+        if (Setup == SetupStateHome)
         {
+                // Anzeige des Wortes "Setup"
                 lc.setRow(0, 7, B01011011); //  Punkt dann beginntend oben im Uhrzeigersinn
                 //lc.setChar(0, 6, 'e', false); //2. Led
                 lc.setChar(0, 6, 'e', false); //2. Led
@@ -126,12 +129,12 @@ void SetupKnoepfe()
                 lc.setChar(0, 0, ' ', false); //8. Led
 
                 for (int i = 0; i < 6; i++) // Strafzeiten löschen falls vorhanden
-                {Strafzeiten[i] = 0;}
+                { Strafzeiten[i] = 0; }
                 StrafwurfTimer = 0; // Strafwurf löschen falls vorhanden
                 istStrafwurf = 0;
         }
 
-        if (Setup == 1)
+        if (Setup == SetupStateSpieldauer)
         {
                 lc.setChar(0, 7, (Spieldauer / 60) / 10, false); //1. Led
                 lc.setChar(0, 6, (Spieldauer / 60) % 10, false); //2. Led
@@ -140,7 +143,7 @@ void SetupKnoepfe()
                 lc.setChar(0, 3, 'A', false); //5. Led
         }
 
-        if (Setup == 2)
+        if (Setup == SetupStateStrafzeit)
         {
                 lc.setChar(0, 7, (Strafzeit / 60) / 10, false); //1. Led
                 lc.setChar(0, 6, (Strafzeit / 60) % 10, false); //2. Led
@@ -149,7 +152,7 @@ void SetupKnoepfe()
                 lc.setChar(0, 3, 'B', false); //5. Led
         }
 
-        if (Setup == 3)
+        if (Setup == SetupStateStrafwurf)
         {
                 lc.setChar(0, 7, (Strafwurf / 60) / 10, false); //1. Led
                 lc.setChar(0, 6, (Strafwurf / 60) % 10, false); //2. Led
@@ -158,7 +161,7 @@ void SetupKnoepfe()
                 lc.setChar(0, 3, 'C', false); //5. Led
         }
 
-        if (Setup == 4)
+        if (Setup == SetupStateDurchlaufendeSpielzeit)
         {
                 lc.setChar(0, 7, DurchlaufendeSpielzeit, false); //1. Led
                 lc.setChar(0, 6, ' ', false); //2. Led
@@ -167,7 +170,7 @@ void SetupKnoepfe()
                 lc.setChar(0, 3, 'D', false); //5. Led
         }
 
-        if (Setup == 5)
+        if (Setup == SetupStateHalbzeitPause)
         {
                 lc.setChar(0, 7, (HalbzeitPause / 60) / 10, false); //1. Led
                 lc.setChar(0, 6, (HalbzeitPause / 60) % 10, false); //2. Led

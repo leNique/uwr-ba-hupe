@@ -2,7 +2,6 @@ void LangesSignal (int i, bool val)
 {
         if (Stop != 0 || DurchlaufendeSpielzeit == 1)
         {
-
                 if (val == 0 && LangesHupenStatus[i] == 0)
                 {
                         TimerLangesHupen[i] = millis();
