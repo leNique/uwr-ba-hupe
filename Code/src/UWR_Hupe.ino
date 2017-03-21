@@ -73,7 +73,18 @@ unsigned long StartTimerHalbzeitPause=0;
 char BluetoothBuffer[4];
 char BluetoothTrennzeichen[]=";";
 char BluetoothString[33];
+
 #endif
+
+
+
+//Drücker abfragen
+bool DrueckerSpielleiter=1;
+bool DrueckerUW1=1;
+bool DrueckerUW2=1;
+unsigned long TimerDrueckerSpielleiter=0;
+unsigned long TimerDrueckerUW1=0;
+unsigned long TimerDrueckerUW2=0;
 
 
 
@@ -101,6 +112,7 @@ void setup()
 
         #if OUTPUT_BLUETOOTH
         Bluetooth.begin(9600);
+
         #endif
         #if OUTPUT_SERIAL
         Serial.begin(9600);
@@ -113,6 +125,7 @@ void setup()
         pinMode(PinDrueckerUW1, INPUT);
         pinMode(PinDrueckerUW2, INPUT);
         pinMode(PinHorn, OUTPUT);
+
         digitalWrite(PinHorn, HIGH);
         pinMode(PinButtonReset, INPUT_PULLUP); //Knopf1
         pinMode(PinButtonSetup, INPUT_PULLUP); //Knopf2
@@ -135,6 +148,11 @@ void loop()
 
         Knoepfe();          // Knöpfe an der Hupe werden abgefragt
         AutomatischHupen(); // falls automatisch gehupt werden muss wird das gemacht
+
+
+// Drücker Abfragen
+DrueckerAbfragen();
+
 
         if (TimerSpielzeit <= 0)                         // Spiel zu ende - Abhupen, evtl. Halbzeit und reset
         {
