@@ -97,7 +97,7 @@ void zeigReset()
   #endif
   #if OUTPUT_LCD
   lcd.setCursor(0, 1);
-  lcd.print("Reset?   <ENTER>");
+  lcd.print("Rese t?  ");
   #endif
 }
 
@@ -115,7 +115,7 @@ void zeigSetup()
   #endif
   #if OUTPUT_LCD
   lcd.setCursor(0, 1);
-  lcd.print("Setup    <ENTER>");
+  lcd.print("Setu p   ");
   #endif
   #if OUTPUT_SERIAL
   Serial.write("Setup");
