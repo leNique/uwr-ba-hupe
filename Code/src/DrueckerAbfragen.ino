@@ -1,53 +1,60 @@
-/*void DrueckerAbfragen()
+void DrueckerAbfragen()
 {
 
-  if (digitalRead(PinDrueckerSpielleiter)==0 && TimerDrueckerSpielleiter==0)
+  BounceDrueckerSpielleiter.update();
+  BounceDrueckerUW1.update();
+  BounceDrueckerUW2.update();
+
+
+  if (BounceDrueckerSpielleiter.read()==0 && TimerDrueckerSpielleiter==0)
   {
     TimerDrueckerSpielleiter=millis();
   }
-  else
+
+  if (BounceDrueckerSpielleiter.read()==1)
   {
     TimerDrueckerSpielleiter=0;
     DrueckerSpielleiter=0;
   }
 
-  if (TimerDrueckerSpielleiter!=0 && TimerDrueckerSpielleiter+10 < millis())
+  if (TimerDrueckerSpielleiter!=0 && TimerDrueckerSpielleiter+20 < millis())
   {
-    DrueckerSpielleiter=1;       //Drücker wurde 10 ms gedrückt - bestätigt
+    DrueckerSpielleiter=1;       //Drücker wurde 20 ms gedrückt - bestätigt
   }
 
 
-  if (digitalRead(PinDrueckerUW1)==0 && TimerDrueckerUW1==0)
+  if (BounceDrueckerUW1.read()==0 && TimerDrueckerUW1==0)
   {
     TimerDrueckerUW1=millis();
   }
-  else
+
+  if (BounceDrueckerUW1.read()==1)
   {
     TimerDrueckerUW1=0;
     DrueckerUW1=0;
   }
 
-  if (TimerDrueckerUW1!=0 && TimerDrueckerUW1+10 < millis())
+  if (TimerDrueckerUW1!=0 && TimerDrueckerUW1+20 < millis())
   {
-    DrueckerUW1=1;       //Drücker wurde 10 ms gedrückt - bestätigt
+    DrueckerUW1=1;       //Drücker wurde 20 ms gedrückt - bestätigt
   }
 
 
-  if (digitalRead(PinDrueckerUW2)==0 && TimerDrueckerUW2==0)
+  if (BounceDrueckerUW2.read()==0 && TimerDrueckerUW2==0)
   {
     TimerDrueckerUW2=millis();
   }
-  else
+
+  if (BounceDrueckerUW2.read()==1)
   {
     TimerDrueckerUW2=0;
     DrueckerUW2=0;
   }
 
-  if (TimerDrueckerUW2!=0 && TimerDrueckerUW2+10 < millis())
+  if (TimerDrueckerUW2!=0 && TimerDrueckerUW2+20 < millis())
   {
-    DrueckerUW2=1;       //Drücker wurde 10 ms gedrückt - bestätigt
+    DrueckerUW2=1;       //Drücker wurde 20 ms gedrückt - bestätigt
   }
 
 
 }
-*/
