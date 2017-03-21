@@ -1,19 +1,20 @@
-<<<<<<< HEAD
-#include "LedControl.h" //  need the library
+//#include "LedControl.h" //  need the library
 #include <SoftwareSerial.h>// import the serial library
 #include "constants.h"
 #include <Bounce2.h>
 
-SoftwareSerial Bluetooth(9, 8); // RX, TX
-LedControl lc = LedControl(12, 11, 10, 1); //
-// pin 12 is connected to DOUT
-// pin 11 is connected to the CLK
-// pin 10 is connected to LOAD
-=======
 #include "config.h"
 #include "bluetooth.h"
 #include "display.h"
->>>>>>> origin/master
+
+//SoftwareSerial Bluetooth(9, 8); // RX, TX
+//LedControl lc = LedControl(12, 11, 10, 1); //
+// pin 12 is connected to DOUT
+// pin 11 is connected to the CLK
+// pin 10 is connected to LOAD
+
+
+
 
 unsigned long Start = 0;
 unsigned long Stop = 0;
@@ -126,7 +127,7 @@ void setup()
 
         #if OUTPUT_BLUETOOTH
         Bluetooth.begin(9600);
-<<<<<<< HEAD
+
         //Serial.begin(9600);
         pinMode(PinDrueckerSpielleiter, INPUT);     // set pin to input
         pinMode(PinDrueckerUW1, INPUT);     // set pin to input
@@ -140,7 +141,7 @@ void setup()
         DrueckerUW2.interval(10);
 
         pinMode(PinHorn, OUTPUT);   // Hupe
-=======
+        digitalWrite(PinHorn, HIGH);
 
         #endif
         #if OUTPUT_SERIAL
@@ -150,13 +151,8 @@ void setup()
         }
         #endif
 
-        pinMode(PinDrueckerSpielleiter, INPUT);
-        pinMode(PinDrueckerUW1, INPUT);
-        pinMode(PinDrueckerUW2, INPUT);
-        pinMode(PinHorn, OUTPUT);
 
->>>>>>> origin/master
-        digitalWrite(PinHorn, HIGH);
+
         pinMode(PinButtonReset, INPUT_PULLUP); //Knopf1
         pinMode(PinButtonSetup, INPUT_PULLUP); //Knopf2
         pinMode(PinButtonPlus, INPUT_PULLUP); //Knopf3
@@ -222,23 +218,14 @@ DrueckerUW2.update();
         if (DrueckerSpielleiter.read() == 0 && HupStatus[1] < 2 && HupStatus[2] < 2)
         {
           digitalWrite(PinHorn, LOW);
-<<<<<<< HEAD
-          lc.setChar(0, 2,'a', false);}
+          zeigWerGehuptHat('a');
+        }
         else if (DrueckerUW1.read() == 0 && HupStatus[0] < 2 && HupStatus[2] < 2)
         {
           digitalWrite(PinHorn, LOW);
-          lc.setChar(0, 2,'b', false);}
+          lc.setChar(0, 2,'b', false);
+        }
         else if (DrueckerUW2.read() == 0 && HupStatus[1] < 2 && HupStatus[0] < 2)
-=======
-          zeigWerGehuptHat('a');
-        }
-        else if ( digitalRead(PinDrueckerUW1) == 0 && HupStatus[0] < 2 && HupStatus[2] < 2)
-        {
-          digitalWrite(PinHorn, LOW);
-          zeigWerGehuptHat('b');
-        }
-        else if ( digitalRead(PinDrueckerUW2) == 0 && HupStatus[1] < 2 && HupStatus[0] < 2)
->>>>>>> origin/master
         {
           digitalWrite(PinHorn, LOW);
           zeigWerGehuptHat('c');
