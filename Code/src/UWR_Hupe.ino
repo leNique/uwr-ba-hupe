@@ -96,7 +96,7 @@ void setup()
         // Print a message to the LCD.
         lcd.print("uwr-ba-hupe     ");
         lcd.setCursor(0, 1);
-        lcd.print("startet...      ");
+        lcd.print("star tet.");
         #endif
 
         #if OUTPUT_BLUETOOTH
