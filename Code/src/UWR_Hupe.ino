@@ -1,12 +1,6 @@
-#include "LedControl.h" //  need the library
-#include <SoftwareSerial.h>// import the serial library
-#include "constants.h"
-
-SoftwareSerial Bluetooth(9, 8); // RX, TX
-LedControl lc = LedControl(12, 11, 10, 1); //
-// pin 12 is connected to DOUT
-// pin 11 is connected to the CLK
-// pin 10 is connected to LOAD
+#include "config.h"
+#include "bluetooth.h"
+#include "display.h"
 
 unsigned long Start = 0;
 unsigned long Stop = 0;
@@ -75,9 +69,14 @@ bool istHalbzeitPause=0;
 unsigned long TimerHalbzeitPause=0;
 unsigned long StartTimerHalbzeitPause=0;
 
+#if OUTPUT_BLUETOOTH
 char BluetoothBuffer[4];
 char BluetoothTrennzeichen[]=";";
 char BluetoothString[33];
+
+#endif
+
+
 
 //Drücker abfragen
 bool DrueckerSpielleiter=1;
@@ -89,33 +88,50 @@ unsigned long TimerDrueckerUW2=0;
 
 
 
+
 void setup()
 {
-        // put your setup code here, to run once:
+        #if OUTPUT_LED
         lc.shutdown(0, false); // turn off power saving, enables display
         lc.setIntensity(0, 8); // sets brightness (0~15 possible values)
         lc.clearDisplay(0);// clear screen
         delay(1005);
+        #endif
         //  Start=millis();        //Beim Anhupen Ausführen
         //  TimerSpielzeit=Spieldauer;      //Beim Anhupen Ausführen
         //  Start=Start+TimerSpielzeit*1000;//Beim Anhupen Ausführen
 
+        #if OUTPUT_LCD
+        // set up the LCD's number of columns and rows:
+        lcd.begin(16, 2);
+        // Print a message to the LCD.
+        lcd.print("uwr-ba-hupe     ");
+        lcd.setCursor(0, 1);
+        lcd.print("star tet.");
+        #endif
 
+        #if OUTPUT_BLUETOOTH
         Bluetooth.begin(9600);
-        //Serial.begin(9600);
-        pinMode(PinDrueckerSpielleiter, INPUT);     // set pin to input
-        pinMode(PinDrueckerUW1, INPUT);     // set pin to input
-        pinMode(PinDrueckerUW2, INPUT);     // set pin to input
-        pinMode(PinHorn, OUTPUT);   // Hupe
+
+        #endif
+        #if OUTPUT_SERIAL
+        Serial.begin(9600);
+        while (!Serial) {
+          ; // wait for serial port to connect. Needed for native USB port only
+        }
+        #endif
+
+        pinMode(PinDrueckerSpielleiter, INPUT);
+        pinMode(PinDrueckerUW1, INPUT);
+        pinMode(PinDrueckerUW2, INPUT);
+        pinMode(PinHorn, OUTPUT);
+
         digitalWrite(PinHorn, HIGH);
         pinMode(PinButtonReset, INPUT_PULLUP); //Knopf1
         pinMode(PinButtonSetup, INPUT_PULLUP); //Knopf2
         pinMode(PinButtonPlus, INPUT_PULLUP); //Knopf3
         pinMode(PinButtonMinus, INPUT_PULLUP); //Knopf4
-
 }
-
-
 
 
 
@@ -130,8 +146,8 @@ void loop()
         // Setup Abgeschlossen - Spiel kann beginnen
 
 
-        Knoepfe();                            //Knöpfe an der Hupe werden abgefragt
-        AutomatischHupen ();                  // falls automatisch gehupt werden muss wird das gemacht
+        Knoepfe();          // Knöpfe an der Hupe werden abgefragt
+        AutomatischHupen(); // falls automatisch gehupt werden muss wird das gemacht
 
 
 // Drücker Abfragen
@@ -147,7 +163,9 @@ DrueckerAbfragen();
                  if (warHalbzeitPause==0)     // Strafzeiten nur löschen falls 2. Spielhälfte
                  {
                    for (int i=0; i<6; i++)
-                   {Strafzeiten[i]=0;}
+                   {
+                     Strafzeiten[i]=0;
+                   }
                    warHalbzeitPause=1;
                  }
                  else
@@ -163,7 +181,6 @@ DrueckerAbfragen();
 
 
                 langesHupen=1;       //Abhupen
-
         }                                            // Spiel zu ende - Abhupen und reset
 
         UpdateTime();                           // Anzeige akualisieren
@@ -173,15 +190,18 @@ DrueckerAbfragen();
         if (digitalRead(PinDrueckerSpielleiter) == 0 && HupStatus[1] < 2 && HupStatus[2] < 2)
         {
           digitalWrite(PinHorn, LOW);
-          lc.setChar(0, 2,'a', false);}
+          zeigWerGehuptHat('a');
+        }
         else if ( digitalRead(PinDrueckerUW1) == 0 && HupStatus[0] < 2 && HupStatus[2] < 2)
         {
           digitalWrite(PinHorn, LOW);
-          lc.setChar(0, 2,'b', false);}
+          zeigWerGehuptHat('b');
+        }
         else if ( digitalRead(PinDrueckerUW2) == 0 && HupStatus[1] < 2 && HupStatus[0] < 2)
         {
           digitalWrite(PinHorn, LOW);
-          lc.setChar(0, 2,'c', false);}
+          zeigWerGehuptHat('c');
+        }
         else if (langesHupen==0 && kurzesHupen==0)
         {
                 digitalWrite(PinHorn, HIGH);

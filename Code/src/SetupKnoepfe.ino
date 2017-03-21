@@ -1,12 +1,11 @@
-#include "constants.h"
+#include "config.h"
 
 void SetupKnoepfe()
 {
-
         if (digitalRead(PinButtonReset) == 0 && Knopf1Timer < millis() - 500) // Reset initalisieren
         {
                 Knopf1Timer = millis();
-                Setup = 0;
+                Setup = SetupStateHome;
         }
 
 
@@ -36,11 +35,8 @@ void SetupKnoepfe()
                         istStrafwurf=0;
                         StrafwurfStop=0;
 
-                        lc.setChar(0, 7, (TimerSpielzeit / 60) / 10, false); //1. Led
-                        lc.setChar(0, 6, (TimerSpielzeit / 60) % 10, false); //2. Led
-                        lc.setChar(0, 5, (TimerSpielzeit % 60) / 10, false); //3. Led
-                        lc.setChar(0, 4, (TimerSpielzeit % 60) % 10, false); //4. Led
-                        lc.setChar(0, 3, ' ', false); //5. Led
+                        zeigSpielzeit(TimerSpielzeit);
+                        clearDigit5();
                 }
 
 
@@ -125,18 +121,12 @@ void SetupKnoepfe()
         //Anzeige Setup
         if (Setup == SetupStateHome)
         {
-                // Anzeige des Wortes "Setup"
-                lc.setRow(0, 7, B01011011); //  Punkt dann beginntend oben im Uhrzeigersinn
-                lc.setChar(0, 6, 'e', false); //2. Led
-                lc.setRow(0, 5, B00001111); //3. Led
-                lc.setRow(0, 4, B00111110); //4. Led
-                lc.setChar(0, 3, 'p', false); //5. Led
-                lc.setChar(0, 2, ' ', false); //6. Led
-                lc.setChar(0, 1, ' ', false); //7. Led
-                lc.setChar(0, 0, ' ', false); //8. Led
+                zeigSetup();
 
                 for (int i = 0; i < 6; i++) // Strafzeiten löschen falls vorhanden
-                { Strafzeiten[i] = 0; }
+                {
+                  Strafzeiten[i] = 0;
+                }
                 StrafwurfTimer = 0; // Strafwurf löschen falls vorhanden
                 istStrafwurf = 0;
                 durchlaufendeZeitStop = 1; // Spiel mit durchlaufender Zeit anhalten
@@ -144,46 +134,32 @@ void SetupKnoepfe()
 
         if (Setup == SetupStateSpieldauer)
         {
-                lc.setChar(0, 7, (Spieldauer / 60) / 10, false); //1. Led
-                lc.setChar(0, 6, (Spieldauer / 60) % 10, false); //2. Led
-                lc.setChar(0, 5, (Spieldauer % 60) / 10, false); //3. Led
-                lc.setChar(0, 4, (Spieldauer % 60) % 10, false); //4. Led
-                lc.setChar(0, 3, 'A', false); //5. Led
+                zeigSpielzeit(Spieldauer);
+                zeigSetupIndikator('A');
         }
 
         if (Setup == SetupStateStrafzeit)
         {
-                lc.setChar(0, 7, (Strafzeit / 60) / 10, false); //1. Led
-                lc.setChar(0, 6, (Strafzeit / 60) % 10, false); //2. Led
-                lc.setChar(0, 5, (Strafzeit % 60) / 10, false); //3. Led
-                lc.setChar(0, 4, (Strafzeit % 60) % 10, false); //4. Led
-                lc.setChar(0, 3, 'B', false); //5. Led
+                zeigSpielzeit(Strafzeit);
+                zeigSetupIndikator('B');
         }
 
         if (Setup == SetupStateStrafwurf)
         {
-                lc.setChar(0, 7, (Strafwurf / 60) / 10, false); //1. Led
-                lc.setChar(0, 6, (Strafwurf / 60) % 10, false); //2. Led
-                lc.setChar(0, 5, (Strafwurf % 60) / 10, false); //3. Led
-                lc.setChar(0, 4, (Strafwurf % 60) % 10, false); //4. Led
-                lc.setChar(0, 3, 'C', false); //5. Led
+                zeigSpielzeit(Strafwurf);
+                zeigSetupIndikator('C');
         }
 
         if (Setup == SetupStateDurchlaufendeSpielzeit)
         {
-                lc.setChar(0, 7, DurchlaufendeSpielzeit, false); //1. Led
-                lc.setChar(0, 6, ' ', false); //2. Led
-                lc.setChar(0, 5, ' ', false); //3. Led
-                lc.setChar(0, 4, ' ', false); //4. Led
-                lc.setChar(0, 3, 'D', false); //5. Led
+                zeigSetupDurchlaufendeSpielzeit(DurchlaufendeSpielzeit);
+                clearDigits234();
+                zeigSetupIndikator('D');
         }
 
         if (Setup == SetupStateHalbzeitPause)
         {
-                lc.setChar(0, 7, (HalbzeitPause / 60) / 10, false); //1. Led
-                lc.setChar(0, 6, (HalbzeitPause / 60) % 10, false); //2. Led
-                lc.setChar(0, 5, (HalbzeitPause % 60) / 10, false); //3. Led
-                lc.setChar(0, 4, (HalbzeitPause % 60) % 10, false); //4. Led
-                lc.setChar(0, 3, 'E', false); //5. Led
+                zeigSpielzeit(HalbzeitPause);
+                zeigSetupIndikator('E');
         }
 }

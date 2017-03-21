@@ -1,3 +1,19 @@
+// constants.h should not be included directly.
+// Instead, include config.h
+
+// TODO: for each board (uno and mega), find a pin layouts which accomodate everything:
+//       3x referees
+//       1x horn
+//       4x UI buttons
+//       2x Bluetooth
+//       3x LED
+//       - or -
+//       6x LCD
+
+#ifndef config_h
+#include "config.h"
+#endif
+
 #ifndef constants_h
 #define constants_h
 
@@ -7,11 +23,59 @@ const int PinButtonSetup = 15;
 const int PinButtonPlus = 16;
 const int PinButtonMinus = 17;
 
-// Pins for other stuff
+// Pins for buttons and horn
+#if BOARD_UNO
 const int PinDrueckerSpielleiter = 2;
 const int PinDrueckerUW1 = 3;
 const int PinDrueckerUW2 = 4;
 const int PinHorn = 5;
+#endif
+
+#if BOARD_MEGA2560
+const int PinDrueckerSpielleiter = 22;
+const int PinDrueckerUW1 = 23;
+const int PinDrueckerUW2 = 24;
+const int PinHorn = 25;
+#endif
+
+// Pins for LED display (LedControl)
+#if OUTPUT_LED
+const int PinLedDout = 12;
+const int PinLedClk = 11;
+const int PinLedCs = 10;
+const int LedNumDevices = 1;
+#endif
+
+// Pins for LCD display (LiquidCrystal)
+#if OUTPUT_LCD
+// RW is tied to GND
+// data pins 0-3 are not used
+
+#if BOARD_MEGA2560
+const int PinLcdRs = 8;
+const int PinLcdEnable = 9;
+const int PinLcdD4 = 4;
+const int PinLcdD5 = 5;
+const int PinLcdD6 = 6;
+const int PinLcdD7 = 7;
+#endif
+
+#if BOARD_UNO
+const int PinLcdRs = 11;
+const int PinLcdEnable = 12;
+const int PinLcdD4 = 9;
+const int PinLcdD5 = 8;
+const int PinLcdD6 = 7;
+const int PinLcdD7 = 6;
+#endif
+
+#endif
+
+// Pins for Bluetooth module
+#if OUTPUT_BLUETOOTH
+const int PinBluetoothRx = 9;
+const int PinBluetoothTx = 8;
+#endif
 
 // States of the Setup
 enum SetupStates
