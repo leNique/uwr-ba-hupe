@@ -1,4 +1,4 @@
-void DrueckerAbfragen()
+/*void DrueckerAbfragen()
 {
 
   if (digitalRead(PinDrueckerSpielleiter)==0 && TimerDrueckerSpielleiter==0)
@@ -13,6 +13,7 @@ void DrueckerAbfragen()
 
   if (TimerDrueckerSpielleiter!=0 && TimerDrueckerSpielleiter+10 < millis())
   {
+    DrueckerSpielleiter=1;       //Drücker wurde 10 ms gedrückt - bestätigt
   }
 
 
@@ -28,6 +29,7 @@ void DrueckerAbfragen()
 
   if (TimerDrueckerUW1!=0 && TimerDrueckerUW1+10 < millis())
   {
+    DrueckerUW1=1;       //Drücker wurde 10 ms gedrückt - bestätigt
   }
 
 
@@ -43,7 +45,9 @@ void DrueckerAbfragen()
 
   if (TimerDrueckerUW2!=0 && TimerDrueckerUW2+10 < millis())
   {
+    DrueckerUW2=1;       //Drücker wurde 10 ms gedrückt - bestätigt
   }
 
 
 }
+*/

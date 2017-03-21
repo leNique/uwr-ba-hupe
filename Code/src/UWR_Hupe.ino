@@ -1,6 +1,7 @@
 #include "LedControl.h" //  need the library
 #include <SoftwareSerial.h>// import the serial library
 #include "constants.h"
+#include <Bounce2.h>
 
 SoftwareSerial Bluetooth(9, 8); // RX, TX
 LedControl lc = LedControl(12, 11, 10, 1); //
@@ -80,14 +81,15 @@ char BluetoothTrennzeichen[]=";";
 char BluetoothString[33];
 
 //Drücker abfragen
-bool DrueckerSpielleiter=1;
-bool DrueckerUW1=1;
-bool DrueckerUW2=1;
-unsigned long TimerDrueckerSpielleiter=0;
-unsigned long TimerDrueckerUW1=0;
-unsigned long TimerDrueckerUW2=0;
-
-
+//bool DrueckerSpielleiter=1;
+//bool DrueckerUW1=1;
+//bool DrueckerUW2=1;
+//unsigned long TimerDrueckerSpielleiter=0;
+//unsigned long TimerDrueckerUW1=0;
+//unsigned long TimerDrueckerUW2=0;
+Bounce DrueckerSpielleiter = Bounce();
+Bounce DrueckerUW1 = Bounce();
+Bounce DrueckerUW2 = Bounce();
 
 void setup()
 {
@@ -106,6 +108,14 @@ void setup()
         pinMode(PinDrueckerSpielleiter, INPUT);     // set pin to input
         pinMode(PinDrueckerUW1, INPUT);     // set pin to input
         pinMode(PinDrueckerUW2, INPUT);     // set pin to input
+
+        DrueckerSpielleiter.attach(PinDrueckerSpielleiter);
+        DrueckerSpielleiter.interval(10);
+        DrueckerUW1.attach(PinDrueckerUW1);
+        DrueckerUW1.interval(10);
+        DrueckerUW2.attach(PinDrueckerUW2);
+        DrueckerUW2.interval(10);
+
         pinMode(PinHorn, OUTPUT);   // Hupe
         digitalWrite(PinHorn, HIGH);
         pinMode(PinButtonReset, INPUT_PULLUP); //Knopf1
@@ -135,7 +145,9 @@ void loop()
 
 
 // Drücker Abfragen
-DrueckerAbfragen();
+DrueckerSpielleiter.update();
+DrueckerUW1.update();
+DrueckerUW2.update();
 
 
         if (TimerSpielzeit <= 0)                         // Spiel zu ende - Abhupen, evtl. Halbzeit und reset
@@ -170,15 +182,15 @@ DrueckerAbfragen();
 
         //if ((digitalRead(2) == 0 && LangesHupenStatus[1]==0 && LangesHupenStatus[2]==0 && HupStatus[1]==0 && HupStatus[2]==0)||( digitalRead(3) == 0 && LangesHupenStatus[0]==0 && LangesHupenStatus[2]==0 && HupStatus[0]==0 && HupStatus[2]==0) || ( digitalRead(4) == 0 && LangesHupenStatus[1]==0 && LangesHupenStatus[0]==0 && HupStatus[1]==0 && HupStatus[0]==0)) // Hupe hupen lassen bei drücken eines Knopfes
         //if ((digitalRead(2) == 0 )||( digitalRead(3) == 0 ) || ( digitalRead(4) == 0 )) // Hupe hupen lassen bei drücken eines Knopfes
-        if (digitalRead(PinDrueckerSpielleiter) == 0 && HupStatus[1] < 2 && HupStatus[2] < 2)
+        if (DrueckerSpielleiter.read() == 0 && HupStatus[1] < 2 && HupStatus[2] < 2)
         {
           digitalWrite(PinHorn, LOW);
           lc.setChar(0, 2,'a', false);}
-        else if ( digitalRead(PinDrueckerUW1) == 0 && HupStatus[0] < 2 && HupStatus[2] < 2)
+        else if (DrueckerUW1.read() == 0 && HupStatus[0] < 2 && HupStatus[2] < 2)
         {
           digitalWrite(PinHorn, LOW);
           lc.setChar(0, 2,'b', false);}
-        else if ( digitalRead(PinDrueckerUW2) == 0 && HupStatus[1] < 2 && HupStatus[0] < 2)
+        else if (DrueckerUW2.read() == 0 && HupStatus[1] < 2 && HupStatus[0] < 2)
         {
           digitalWrite(PinHorn, LOW);
           lc.setChar(0, 2,'c', false);}
