@@ -1,3 +1,5 @@
+#include "bluetooth.h"
+
 void UpdateTime()
 {
         //TimerSpielzeit +1 ???
@@ -12,10 +14,7 @@ void UpdateTime()
                         TimerSpielzeit--;
                 }
 
-                lc.setChar(0, 7, (TimerSpielzeit / 60) / 10, false); //1. Led
-                lc.setChar(0, 6, (TimerSpielzeit / 60) % 10, false); //2. Led
-                lc.setChar(0, 5, (TimerSpielzeit % 60) / 10, false); //3. Led
-                lc.setChar(0, 4, (TimerSpielzeit % 60) % 10, false); //4. Led
+                zeigSpielzeit(TimerSpielzeit);
 
                 kleinsteStrafzeit = Strafzeit; //kleinsteStrafzeit auf max setzen
                 AnzahlStrafzeiten = 0;
@@ -36,15 +35,11 @@ void UpdateTime()
                 {
                         if (kleinsteStrafzeit <= 99 && AnzahlStrafzeiten != 0)
                         {
-                                lc.setChar(0, 3, AnzahlStrafzeiten, false); //5. Led
-                                lc.setChar(0, 1, kleinsteStrafzeit / 10, false); //7. Led
-                                lc.setChar(0, 0, kleinsteStrafzeit % 10, false); //8. Led
+                                zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
                         }
                         if (AnzahlStrafzeiten == 0 )
                         {
-                                lc.setChar(0, 3, ' ', false); //5. Led
-                                lc.setChar(0, 1, ' ', false); //7. Led
-                                lc.setChar(0, 0, ' ', false); //8. Led
+                                clearDigits578();
                         }
                 }
                 else                   // Strafwurf MODUS wird gerade ausgeführt
@@ -57,28 +52,26 @@ void UpdateTime()
                         if (StrafwurfTimer > 0)
                         {
                                 StrafwurfTimer--;
-                                lc.setChar(0, 1, StrafwurfTimer / 10, false); //7. Led
-                                lc.setChar(0, 0, StrafwurfTimer % 10, false); //8. Led
+                                zeigSekundenAn78(StrafwurfTimer);
                         }
                         else
                         {
                                 if (nachSpielZeit==0)
-                                {Stop = millis();}                  // Strafwurf zuende - Zeit wird angehalten falls noch keine Nachspielzeit erreicht ist
+                                { Stop = millis(); }                  // Strafwurf zuende - Zeit wird angehalten falls noch keine Nachspielzeit erreicht ist
                                 istStrafwurf=0;
                                 kurzesHupen=1;                    //kurzesHupen wird ausgeführt
 
                                 // Anzeige von Strafwurf auf Strafzeiten umstellen
                                 if (kleinsteStrafzeit <= 99 && AnzahlStrafzeiten != 0)
                                 {
-                                        lc.setChar(0, 3, AnzahlStrafzeiten, false); //5. Led
-                                        lc.setChar(0, 1, kleinsteStrafzeit / 10, false); //7. Led
-                                        lc.setChar(0, 0, kleinsteStrafzeit % 10, false); //8. Led
+                                        zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
                                 }
                         }
 
 
                 }
 
+                #if OUTPUT_BLUETOOTH
                 itoa (TimerSpielzeit,BluetoothBuffer,10);
                 strcpy(BluetoothString,BluetoothBuffer);
                 strcat(BluetoothString,BluetoothTrennzeichen);
@@ -108,6 +101,7 @@ void UpdateTime()
                 strcat(BluetoothString,";0");
 
                 Bluetooth.println(BluetoothString);
+                #endif
         }
 
         ////// HALPZEITPAUSE
@@ -117,10 +111,7 @@ void UpdateTime()
         {
                 TimerHalbzeitPause--;
 
-                lc.setChar(0, 7, (TimerHalbzeitPause / 60) / 10, false); //1. Led
-                lc.setChar(0, 6, (TimerHalbzeitPause / 60) % 10, false); //2. Led
-                lc.setChar(0, 5, (TimerHalbzeitPause % 60) / 10, false); //3. Led
-                lc.setChar(0, 4, (TimerHalbzeitPause % 60) % 10, false); //4. Led
+                zeigSpielzeit(TimerHalbzeitPause);
 
                 if (TimerHalbzeitPause==0)                                             // Die Halbzeit ist zu ende - Fertig machen für Spielbeginn
                 {
@@ -131,28 +122,26 @@ void UpdateTime()
                         TimerSpielzeit = Spieldauer;
                         Start = Start + TimerSpielzeit * 1000;
                         Stop = millis();
-                        lc.setChar(0, 7, (TimerSpielzeit / 60) / 10, false); //1. Led
-                        lc.setChar(0, 6, (TimerSpielzeit / 60) % 10, false); //2. Led
-                        lc.setChar(0, 5, (TimerSpielzeit % 60) / 10, false); //3. Led
-                        lc.setChar(0, 4, (TimerSpielzeit % 60) % 10, false); //4. Led
-                        lc.setChar(0, 3, ' ', false); //5. Led
-                        lc.setChar(0, 2, ' ', false); //6. Led
-                        lc.setChar(0, 1, ' ', false); //7. Led
-                        lc.setChar(0, 0, ' ', false); //9. Led
+                        zeigSpielzeit(TimerSpielzeit);
+                        clearDigits5678();
 
+                        #if OUTPUT_BLUETOOTH
                         itoa (TimerSpielzeit,BluetoothBuffer,10);
                         strcpy(BluetoothString,BluetoothBuffer);
                         strcat(BluetoothString,";0;0;0;0;0;0;0;0");
 
                         Bluetooth.println(BluetoothString);
+                        #endif
                 }
                 else
                 {
+                        #if OUTPUT_BLUETOOTH
                         itoa (TimerHalbzeitPause,BluetoothBuffer,10);
                         strcpy(BluetoothString,"0;0;0;0;0;0;0;0;");
                         strcat(BluetoothString,BluetoothBuffer);
 
                         Bluetooth.println(BluetoothString);
+                        #endif
                 }
         }
 }

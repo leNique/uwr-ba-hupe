@@ -1,3 +1,7 @@
+#include "config.h"
+#include "bluetooth.h"
+#include "display.h"
+
 void ZweiSignale(int i, bool val)
 {
 
@@ -55,8 +59,12 @@ void ZweiSignale(int i, bool val)
           Fehler[i] = 0;
         }
 
+#if OUTPUT_BLUETOOTH
 if (HupStatus[i]==4)
-{Bluetooth.println(Fehler[i]);}
+{
+  Bluetooth.println(Fehler[i]);
+}
+#endif
         if (val == 0 && HupStatus[i] == 4 && TimerHupen[i] < millis() - 50 && Fehler[i] < 20)     // 2. Signal bestätigt
         {
                 Fehler[i] = 0;
@@ -72,14 +80,11 @@ if (HupStatus[i]==4)
                         istStrafwurf = 0;
                         StrafwurfTimer = 0;
 
-                        lc.setChar(0, 1, ' ', false); //7. Led
-                        lc.setChar(0, 0, ' ', false); //8. Led
+                        clearDigits78();
                         // Anzeige von Strafwurf auf Strafzeiten umstellen
                         if (kleinsteStrafzeit <= 99 && AnzahlStrafzeiten != 0)
                         {
-                                lc.setChar(0, 3, AnzahlStrafzeiten, false); //5. Led
-                                lc.setChar(0, 1, kleinsteStrafzeit / 10, false); //7. Led
-                                lc.setChar(0, 0, kleinsteStrafzeit % 10, false); //8. Led
+                                zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
                         }
                 }
 
