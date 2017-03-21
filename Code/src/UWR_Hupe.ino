@@ -79,10 +79,17 @@ char BluetoothString[33];
 #endif
 
 
-// Drücker
-Bounce DrueckerSpielleiter = Bounce();
-Bounce DrueckerUW1 = Bounce();
-Bounce DrueckerUW2 = Bounce();
+
+//Drücker abfragen
+bool DrueckerSpielleiter=1;
+bool DrueckerUW1=1;
+bool DrueckerUW2=1;
+unsigned long TimerDrueckerSpielleiter=0;
+unsigned long TimerDrueckerUW1=0;
+unsigned long TimerDrueckerUW2=0;
+Bounce BounceDrueckerSpielleiter = Bounce();
+Bounce BounceDrueckerUW1 = Bounce();
+Bounce BounceDrueckerUW2 = Bounce();
 
 
 void setup()
@@ -122,12 +129,12 @@ void setup()
         pinMode(PinDrueckerUW1, INPUT);
         pinMode(PinDrueckerUW2, INPUT);
 
-        DrueckerSpielleiter.attach(PinDrueckerSpielleiter);
-        DrueckerSpielleiter.interval(10);
-        DrueckerUW1.attach(PinDrueckerUW1);
-        DrueckerUW1.interval(10);
-        DrueckerUW2.attach(PinDrueckerUW2);
-        DrueckerUW2.interval(10);
+        BounceDrueckerSpielleiter.attach(PinDrueckerSpielleiter);
+        BounceDrueckerSpielleiter.interval(20);
+        BounceDrueckerUW1.attach(PinDrueckerUW1);
+        BounceDrueckerUW1.interval(20);
+        BounceDrueckerUW2.attach(PinDrueckerUW2);
+        BounceDrueckerUW2.interval(20);
 
         pinMode(PinHorn, OUTPUT);   // Hupe
         digitalWrite(PinHorn, HIGH);
@@ -159,10 +166,8 @@ void loop()
         AutomatischHupen(); // falls automatisch gehupt werden muss wird das gemacht
 
 
-        // Drücker Abfragen
-        DrueckerSpielleiter.update();
-        DrueckerUW1.update();
-        DrueckerUW2.update();
+
+DrueckerAbfragen();
 
 
         if (TimerSpielzeit <= 0)                         // Spiel zu ende - Abhupen, evtl. Halbzeit und reset
@@ -198,19 +203,17 @@ void loop()
 
         //if ((digitalRead(2) == 0 && LangesHupenStatus[1]==0 && LangesHupenStatus[2]==0 && HupStatus[1]==0 && HupStatus[2]==0)||( digitalRead(3) == 0 && LangesHupenStatus[0]==0 && LangesHupenStatus[2]==0 && HupStatus[0]==0 && HupStatus[2]==0) || ( digitalRead(4) == 0 && LangesHupenStatus[1]==0 && LangesHupenStatus[0]==0 && HupStatus[1]==0 && HupStatus[0]==0)) // Hupe hupen lassen bei drücken eines Knopfes
         //if ((digitalRead(2) == 0 )||( digitalRead(3) == 0 ) || ( digitalRead(4) == 0 )) // Hupe hupen lassen bei drücken eines Knopfes
-        if (DrueckerSpielleiter.read() == 0 && HupStatus[1] < 2 && HupStatus[2] < 2)
+        if (DrueckerSpielleiter == 1 && HupStatus[1] < 2 && HupStatus[2] < 2)
         {
           digitalWrite(PinHorn, LOW);
           zeigWerGehuptHat('a');
         }
-        else if (DrueckerUW1.read() == 0 && HupStatus[0] < 2 && HupStatus[2] < 2)
+        else if (DrueckerUW1 == 1  && HupStatus[0] < 2 && HupStatus[2] < 2)
         {
           digitalWrite(PinHorn, LOW);
-          #if OUTPUT_LED
-          lc.setChar(0, 2,'b', false);
-          #endif
+          zeigWerGehuptHat('b');
         }
-        else if (DrueckerUW2.read() == 0 && HupStatus[1] < 2 && HupStatus[0] < 2)
+        else if (DrueckerUW2 == 1 && HupStatus[1] < 2 && HupStatus[0] < 2)
         {
           digitalWrite(PinHorn, LOW);
           zeigWerGehuptHat('c');
@@ -222,18 +225,18 @@ void loop()
 
         if (Stop == 0 && istHalbzeitPause==0)                      // Wenn Spiel läuft Abhupen suchen (zwei kurze Hupsignale)
         {
-                ZweiSignale(0, digitalRead(PinDrueckerSpielleiter));
-                ZweiSignale(1, digitalRead(PinDrueckerUW1));
-                ZweiSignale(2, digitalRead(PinDrueckerUW2));
+                ZweiSignale(0, DrueckerSpielleiter);
+                ZweiSignale(1, DrueckerUW1);
+                ZweiSignale(2, DrueckerUW2);
         }
         // Wenn Spiel läuft, Abhupen suchen (zwei kurze Hupsignale)
 
 
         if ((Stop != 0 || DurchlaufendeSpielzeit==1) && istHalbzeitPause==0)              // Wenn nicht Spiel läuft oder durchlaufende Spielzeit(Strafwurf beginnt) langes Hupen suchen
         {
-                LangesSignal(0, digitalRead(PinDrueckerSpielleiter));
-                LangesSignal(1, digitalRead(PinDrueckerUW1));
-                LangesSignal(2, digitalRead(PinDrueckerUW2));
+                LangesSignal(0, DrueckerSpielleiter);
+                LangesSignal(1, DrueckerUW1);
+                LangesSignal(2, DrueckerUW2);
         }
         // Wenn nicht Spiel läuft langes Hupen suchen
 }
