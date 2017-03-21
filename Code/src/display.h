@@ -117,9 +117,6 @@ void zeigSetup()
   lcd.setCursor(0, 1);
   lcd.print("Setu p   ");
   #endif
-  #if OUTPUT_SERIAL
-  Serial.write("Setup");
-  #endif
 }
 
 void zeigSetupIndikator(char c)

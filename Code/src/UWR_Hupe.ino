@@ -1,19 +1,8 @@
-//#include "LedControl.h" //  need the library
-#include <SoftwareSerial.h>// import the serial library
-#include "constants.h"
 #include <Bounce2.h>
 
 #include "config.h"
 #include "bluetooth.h"
 #include "display.h"
-
-//SoftwareSerial Bluetooth(9, 8); // RX, TX
-//LedControl lc = LedControl(12, 11, 10, 1); //
-// pin 12 is connected to DOUT
-// pin 11 is connected to the CLK
-// pin 10 is connected to LOAD
-
-
 
 
 unsigned long Start = 0;
@@ -87,7 +76,6 @@ unsigned long StartTimerHalbzeitPause=0;
 char BluetoothBuffer[4];
 char BluetoothTrennzeichen[]=";";
 char BluetoothString[33];
-
 #endif
 
 
@@ -106,6 +94,14 @@ Bounce BounceDrueckerUW2 = Bounce();
 
 void setup()
 {
+        #if OUTPUT_SERIAL
+        Serial.begin(9600);
+        while (!Serial) {
+          ; // wait for serial port to connect. Needed for native USB port only
+        }
+        Serial.write("setup() starting\n");
+        #endif
+
         #if OUTPUT_LED
         lc.shutdown(0, false); // turn off power saving, enables display
         lc.setIntensity(0, 8); // sets brightness (0~15 possible values)
@@ -127,11 +123,11 @@ void setup()
 
         #if OUTPUT_BLUETOOTH
         Bluetooth.begin(9600);
+        #endif
 
-        //Serial.begin(9600);
-        pinMode(PinDrueckerSpielleiter, INPUT);     // set pin to input
-        pinMode(PinDrueckerUW1, INPUT);     // set pin to input
-        pinMode(PinDrueckerUW2, INPUT);     // set pin to input
+        pinMode(PinDrueckerSpielleiter, INPUT);
+        pinMode(PinDrueckerUW1, INPUT);
+        pinMode(PinDrueckerUW2, INPUT);
 
         BounceDrueckerSpielleiter.attach(PinDrueckerSpielleiter);
         BounceDrueckerSpielleiter.interval(20);
@@ -143,20 +139,14 @@ void setup()
         pinMode(PinHorn, OUTPUT);   // Hupe
         digitalWrite(PinHorn, HIGH);
 
-        #endif
-        #if OUTPUT_SERIAL
-        Serial.begin(9600);
-        while (!Serial) {
-          ; // wait for serial port to connect. Needed for native USB port only
-        }
-        #endif
-
-
-
         pinMode(PinButtonReset, INPUT_PULLUP); //Knopf1
         pinMode(PinButtonSetup, INPUT_PULLUP); //Knopf2
         pinMode(PinButtonPlus, INPUT_PULLUP); //Knopf3
         pinMode(PinButtonMinus, INPUT_PULLUP); //Knopf4
+
+        #if OUTPUT_SERIAL
+        Serial.write("setup() finished\n");
+        #endif
 }
 
 
@@ -176,8 +166,9 @@ void loop()
         AutomatischHupen(); // falls automatisch gehupt werden muss wird das gemacht
 
 
-// Drücker Abfragen
+
 DrueckerAbfragen();
+
 
         if (TimerSpielzeit <= 0)                         // Spiel zu ende - Abhupen, evtl. Halbzeit und reset
         {
