@@ -1,4 +1,5 @@
-#include "constants.h"
+#include "config.h"
+#include "display.h"
 
 void Knoepfe ()
 {
@@ -11,23 +12,15 @@ void Knoepfe ()
         {
                 if (Reset==1)
                 {
-                        lc.setChar(0, 7, (TimerSpielzeit / 60) / 10, false); //1. Led
-                        lc.setChar(0, 6, (TimerSpielzeit / 60) % 10, false); //2. Led
-                        lc.setChar(0, 5, (TimerSpielzeit % 60) / 10, false); //3. Led
-                        lc.setChar(0, 4, (TimerSpielzeit % 60) % 10, false); //4. Led
-                        lc.setChar(0, 3, ' ', false); //5. Led
+                        zeigSpielzeit(TimerSpielzeit);
+                        clearDigit5();
                 }
                 Reset = 0;
         }
 
         if (Reset == 1)
         {
-                // Anzeige "Reset"
-                lc.setRow(0, 7, B00000101); //  Punkt dann beginntend oben im Uhrzeigersinn
-                lc.setChar(0, 6, 'e', false); //2. Led
-                lc.setRow(0, 5, B01011011); //3. Led
-                lc.setChar(0, 4, 'e', false); //4. Led
-                lc.setRow(0, 3, B00001111); //5. Led
+                zeigReset();
         }
 
 
@@ -47,14 +40,11 @@ void Knoepfe ()
                         {
                                 StrafwurfTimer = 0;
                                 istStrafwurf = 0;
-                                lc.setChar(0, 1, ' ', false); //7. Led
-                                lc.setChar(0, 0, ' ', false); //8. Led
+                                clearDigits78();
                                 // Anzeige von Strafwurf auf Strafzeiten umstellen
                                 if (kleinsteStrafzeit <= 99 && AnzahlStrafzeiten != 0)
                                 {
-                                        lc.setChar(0, 3, AnzahlStrafzeiten, false); //5. Led
-                                        lc.setChar(0, 1, kleinsteStrafzeit / 10, false); //7. Led
-                                        lc.setChar(0, 0, kleinsteStrafzeit % 10, false); //8. Led
+                                        zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
                                 }
                         }
                         else
@@ -65,8 +55,7 @@ void Knoepfe ()
                                 }
                                 istStrafwurf = 1;
                                 StrafwurfTimer = Strafwurf;
-                                lc.setChar(0, 1, StrafwurfTimer / 10, false); //7. Led
-                                lc.setChar(0, 0, StrafwurfTimer % 10, false); //8. Led
+                                zeigSekundenAn78(StrafwurfTimer);
                         }
                 }
         }
@@ -90,7 +79,7 @@ void Knoepfe ()
                         {
                                 AnzahlStrafzeiten++;
                         }
-                        lc.setChar(0, 3, AnzahlStrafzeiten, false); //5. Led
+                        zeigAnzahlStrafzeiten(AnzahlStrafzeiten);
                 }
         }
 
@@ -127,14 +116,11 @@ void Knoepfe ()
                                 istStrafwurf = 0;
                                 StrafwurfTimer = 0;
 
-                                lc.setChar(0, 1, ' ', false); //7. Led
-                                lc.setChar(0, 0, ' ', false); //8. Led
+                                clearDigits78();
                                 // Anzeige von Strafwurf auf Strafzeiten umstellen
                                 if (kleinsteStrafzeit <= 99 && AnzahlStrafzeiten != 0)
                                 {
-                                        lc.setChar(0, 3, AnzahlStrafzeiten, false); //5. Led
-                                        lc.setChar(0, 1, kleinsteStrafzeit / 10, false); //7. Led
-                                        lc.setChar(0, 0, kleinsteStrafzeit % 10, false); //8. Led
+                                        zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
                                 }
                         }
 
