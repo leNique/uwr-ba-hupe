@@ -3,9 +3,9 @@
 void UpdateTime()
 {
         //TimerSpielzeit +1 ???
-        if ((Start - (TimerSpielzeit) * 1000) < millis() - nachSpielZeit && (Stop == 0 || (DurchlaufendeSpielzeit == 1 && durchlaufendeZeitStop == 0)))
+        if ((Start - (TimerSpielzeit) * 1000) < millis() - nachSpielZeit && (Stop == 0 || (DurchlaufendeSpielzeit && !durchlaufendeZeitStop)))
         {
-                if (istStrafwurf == 1 && TimerSpielzeit == 1)
+                if (istStrafwurf && TimerSpielzeit == 1)
                 {
                         nachSpielZeit = nachSpielZeit + 1000;
                 }
@@ -31,15 +31,15 @@ void UpdateTime()
                         }
                 }
 
-                if (istStrafwurf == 0)
+                if (!istStrafwurf)
                 {
                         zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
                 }
                 else                   // Strafwurf MODUS wird gerade ausgeführt
                 {
-                        if (DurchlaufendeSpielzeit == 1 && StrafwurfStop == 1) //bei durchlaufender  Spielzeit wird Strafwurf ewig verlängert
+                        if (DurchlaufendeSpielzeit && StrafwurfStop) //bei durchlaufender  Spielzeit wird Strafwurf ewig verlängert
                         {
-                                StrafwurfTimer = Strafwurf+1;
+                                StrafwurfTimer = Strafwurf + 1;
                         }
 
                         if (StrafwurfTimer > 0)
@@ -49,10 +49,10 @@ void UpdateTime()
                         }
                         else
                         {
-                                if (nachSpielZeit==0)
+                                if (nachSpielZeit == 0)
                                 { Stop = millis(); }                  // Strafwurf zuende - Zeit wird angehalten falls noch keine Nachspielzeit erreicht ist
-                                istStrafwurf=0;
-                                kurzesHupen=1;                    //kurzesHupen wird ausgeführt
+                                istStrafwurf = false;
+                                kurzesHupen = 1;                    //kurzesHupen wird ausgeführt
 
                                 // Anzeige von Strafwurf auf Strafzeiten umstellen
                                 zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
@@ -95,7 +95,7 @@ void UpdateTime()
         ////// HALPZEITPAUSE
 
         //TimerHalbzeitPause +1 ?????
-        if (istHalbzeitPause==1 && (StartTimerHalbzeitPause - (TimerHalbzeitPause) * 1000 < millis()))
+        if (istHalbzeitPause && (StartTimerHalbzeitPause - (TimerHalbzeitPause) * 1000 < millis()))
         {
                 TimerHalbzeitPause--;
 
@@ -105,7 +105,7 @@ void UpdateTime()
                 {
                         StartTimerHalbzeitPause=0;
                         TimerHalbzeitPause=HalbzeitPause;
-                        istHalbzeitPause=0;
+                        istHalbzeitPause=false;
                         Start = millis();
                         TimerSpielzeit = Spieldauer;
                         Start = Start + TimerSpielzeit * 1000;

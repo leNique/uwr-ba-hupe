@@ -36,10 +36,10 @@ void SetupKnoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isB
             {
                 Strafzeiten[i] = 0;
             }
-            warHalbzeitPause = 0;
-            istHalbzeitPause = 0;
-            istStrafwurf = 0;
-            StrafwurfStop = 0;
+            warHalbzeitPause = false;
+            istHalbzeitPause = false;
+            istStrafwurf = false;
+            StrafwurfStop = false;
 
             zeigSpielzeit(TimerSpielzeit);
             clearDigit5();
@@ -128,8 +128,8 @@ void SetupKnoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isB
                 Strafzeiten[i] = 0;
             }
             StrafwurfTimer = 0; // Strafwurf löschen falls vorhanden
-            istStrafwurf = 0;
-            durchlaufendeZeitStop = 1; // Spiel mit durchlaufender Zeit anhalten
+            istStrafwurf = false;
+            durchlaufendeZeitStop = true; // Spiel mit durchlaufender Zeit anhalten
             break;
 
         case SetupStateSpieldauer:

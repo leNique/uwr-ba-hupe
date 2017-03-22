@@ -6,19 +6,19 @@ void Knoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isButton
     if (isButtonResetPressed && Knopf1Timer < millis() - 1000) // Reset initalisieren
     {
         Knopf1Timer = millis();
-        Reset = 1;
+        Reset = true;
     }
     if (Knopf1Timer + 2000 < millis())    // nach 2 Sekunden ResetModus beenden
     {
-        if (Reset == 1)
+        if (Reset)
         {
             zeigSpielzeit(TimerSpielzeit);
             clearDigit5();
         }
-        Reset = 0;
+        Reset = false;
     }
 
-    if (Reset == 1)
+    if (Reset)
     {
         zeigReset();
     }
@@ -28,28 +28,28 @@ void Knoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isButton
     {
         Knopf2Timer = millis();
 
-        if (Reset == 1)                             // Reset tatsächlich auslösen
+        if (Reset)                             // Reset tatsächlich auslösen
         {
             Setup = SetupStateHome;
         }
 
-        if (Stop != 0 || DurchlaufendeSpielzeit == 1)                           //Strafwurf
+        if (Stop != 0 || DurchlaufendeSpielzeit)                           //Strafwurf
         {
-            if (istStrafwurf == 1)
+            if (istStrafwurf)
             {
                 StrafwurfTimer = 0;
-                istStrafwurf = 0;
+                istStrafwurf = false;
 
                 // Anzeige von Strafwurf auf Strafzeiten umstellen
                 zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
             }
             else
             {
-                if (DurchlaufendeSpielzeit == 1)
+                if (DurchlaufendeSpielzeit)
                 {
-                    StrafwurfStop = 1;
+                    StrafwurfStop = true;
                 }
-                istStrafwurf = 1;
+                istStrafwurf = true;
                 StrafwurfTimer = Strafwurf;
                 zeigSekundenAn78(StrafwurfTimer);
             }
@@ -85,16 +85,16 @@ void Knoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isButton
 
         if (Stop != 0)               //Zeit umschalten läuft - LÄUFT NICHT
         {
-            if (DurchlaufendeSpielzeit == 0)
+            if (!DurchlaufendeSpielzeit)
             {
                 Start = Start + millis() - Stop;
                 Stop = 0;
             }
             else                 //durchlaufende Zeit
             {
-                if (durchlaufendeZeitStop == 1) // Spiel am Anfang Starten
+                if (durchlaufendeZeitStop) // Spiel am Anfang Starten
                 {
-                    durchlaufendeZeitStop = 0;
+                    durchlaufendeZeitStop = false;
                     Start = Start + millis() - Stop;
                     Stop = 0;
                 }
@@ -102,23 +102,23 @@ void Knoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isButton
         }
         else                       //Zeit umschalten LÄUFT - läuft nicht
         {
-            if (DurchlaufendeSpielzeit == 0)
+            if (!DurchlaufendeSpielzeit)
             {
                 Stop = millis(); //Zeit wird angehalten wenn keine durchlaufende Spielzeit
             }
 
-            if (istStrafwurf == 1 && StrafwurfStop == 0) //durchlaufende Zeit - Strafwurf beenden
+            if (istStrafwurf && !StrafwurfStop) //durchlaufende Zeit - Strafwurf beenden
             {
-                istStrafwurf = 0;
+                istStrafwurf = false;
                 StrafwurfTimer = 0;
 
                 // Anzeige von Strafwurf auf Strafzeiten umstellen
                 zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
             }
 
-            if (StrafwurfStop == 1 && istStrafwurf == 1) //durchlaufende Zeit - Strafwurf ausführen
+            if (StrafwurfStop && istStrafwurf) //durchlaufende Zeit - Strafwurf ausführen
             {
-                StrafwurfStop = 0;
+                StrafwurfStop = false;
             }
         }
     } //Ende ButtonMinus

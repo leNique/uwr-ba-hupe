@@ -4,7 +4,6 @@
 
 void ZweiSignale(int i, bool val)
 {
-
         if (val == 1)
         {
                 if (TimerHupen[i] == 0 && HupStatus[i] == 0)
@@ -65,21 +64,18 @@ void ZweiSignale(int i, bool val)
                 Fehler[i] = 0;
                 TimerHupen[i] = 0;
                 HupStatus[i] = 0;
-                if (DurchlaufendeSpielzeit == 0)
+                if (!DurchlaufendeSpielzeit)
                 {
                         Stop = millis(); //Zeit wird angehalten wenn keine durchlaufende Spielzeit
                 }
 
-                if (istStrafwurf == 1)
+                if (istStrafwurf)
                 {
-                        istStrafwurf = 0;
+                        istStrafwurf = false;
                         StrafwurfTimer = 0;
 
                         // Anzeige von Strafwurf auf Strafzeiten umstellen
                         zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
                 }
-
         }
-
-
 }

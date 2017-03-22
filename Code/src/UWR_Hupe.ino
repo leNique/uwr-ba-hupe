@@ -19,9 +19,9 @@ unsigned int LangesHupenFehler[3] = {0};
 unsigned int Fehler[3] = {0};
 int HupStatus[3] = {0};
 
-unsigned long Abhupen=0;
-byte langesHupen=0;
-byte kurzesHupen=0;
+unsigned long Abhupen = 0;
+byte langesHupen = 0;
+byte kurzesHupen = 0;
 
 unsigned long Knopf1Timer = 0;        // Reset
 unsigned long Knopf2Timer = 0;        // Strafwurf / Enter
@@ -50,17 +50,17 @@ byte Status = 0;  // Akuteller Zustand des Spieles                       Status 
 // Status=1 ->
 // Status=1 ->
 
-bool Reset = 0;
-bool durchlaufendeZeitStop = 0;
-bool StrafwurfStop = 0;
+bool Reset = false;
+bool durchlaufendeZeitStop = false;
+bool StrafwurfStop = false;
 
 int Spieldauer = 900; // 15min*60 = 900 - beim Setup belegen
 int Strafzeit = 120; // 2min*60 =120  - beim Setup belegen
 int Strafwurf = 45; // beim Setup belegen
-bool DurchlaufendeSpielzeit = 0; //1 = durchlaufende Spielzeit- beim Setup belegen
+bool DurchlaufendeSpielzeit = false; //true = durchlaufende Spielzeit- beim Setup belegen
 int HalbzeitPause = 300; // 5min Halbzeitpause
 
-bool istStrafwurf = 0;
+bool istStrafwurf = false;
 unsigned long StrafwurfTimer = 0;
 
 
@@ -68,25 +68,25 @@ int Strafzeiten[] = {0, 0, 0, 0, 0, 0};
 int kleinsteStrafzeit;
 int AnzahlStrafzeiten = 0;
 
-bool warHalbzeitPause=0;   // Zähler ob Halbzeit schon war oder noch erste Spielhälfte läuft
-bool istHalbzeitPause=0;
-unsigned long TimerHalbzeitPause=0;
-unsigned long StartTimerHalbzeitPause=0;
+bool warHalbzeitPause = false;   // Zähler ob Halbzeit schon war oder noch erste Spielhälfte läuft
+bool istHalbzeitPause = false;
+unsigned long TimerHalbzeitPause = 0;
+unsigned long StartTimerHalbzeitPause = 0;
 
 #if OUTPUT_BLUETOOTH
 char BluetoothBuffer[4];
-char BluetoothTrennzeichen[]=";";
+char BluetoothTrennzeichen[] = ";";
 char BluetoothString[33];
 #endif
 
 
 //Drücker abfragen
-bool DrueckerSpielleiter=1;
-bool DrueckerUW1=1;
-bool DrueckerUW2=1;
-unsigned long TimerDrueckerSpielleiter=0;
-unsigned long TimerDrueckerUW1=0;
-unsigned long TimerDrueckerUW2=0;
+bool DrueckerSpielleiter = true;
+bool DrueckerUW1 = true;
+bool DrueckerUW2 = true;
+unsigned long TimerDrueckerSpielleiter = 0;
+unsigned long TimerDrueckerUW1 = 0;
+unsigned long TimerDrueckerUW2 = 0;
 Bounce BounceDrueckerSpielleiter = Bounce();
 Bounce BounceDrueckerUW1 = Bounce();
 Bounce BounceDrueckerUW2 = Bounce();
@@ -169,10 +169,10 @@ void loop()
     #endif
 
     #if DIGITAL_BUTTONS
-    bool isButtonResetPressed = (digitalRead(PinButtonReset) == 0);
-    bool isButtonSetupPressed = (digitalRead(PinButtonSetup) == 0);
-    bool isButtonPlusPressed  = (digitalRead(PinButtonPlus)  == 0);
-    bool isButtonMinusPressed = (digitalRead(PinButtonMinus) == 0);
+    bool isButtonResetPressed = (digitalRead(PinButtonReset) == LOW);
+    bool isButtonSetupPressed = (digitalRead(PinButtonSetup) == LOW);
+    bool isButtonPlusPressed  = (digitalRead(PinButtonPlus)  == LOW);
+    bool isButtonMinusPressed = (digitalRead(PinButtonMinus) == LOW);
     #endif
 
     // Setup - Startprogramm
@@ -193,29 +193,28 @@ void loop()
 
         if (TimerSpielzeit <= 0)                         // Spiel zu ende - Abhupen, evtl. Halbzeit und reset
         {
-                durchlaufendeZeitStop = 1; //Werte zurücksetzen
+                durchlaufendeZeitStop = true; //Werte zurücksetzen
                 TimerSpielzeit = Spieldauer;
                 Stop = 1;
                 nachSpielZeit = 0;
-                 if (warHalbzeitPause==0)     // Strafzeiten nur löschen falls 2. Spielhälfte
+                 if (!warHalbzeitPause)     // Strafzeiten nur löschen falls 2. Spielhälfte
                  {
                    for (int i=0; i<6; i++)
                    {
-                     Strafzeiten[i]=0;
+                     Strafzeiten[i] = 0;
                    }
-                   warHalbzeitPause=1;
+                   warHalbzeitPause = true;
                  }
                  else
                  {
-                   warHalbzeitPause=0;
+                   warHalbzeitPause = false;
                  }      // 2. Spielhälfte - neues Spiel beginnt
 
-                if (StartTimerHalbzeitPause==0 && istHalbzeitPause==0)
+                if (StartTimerHalbzeitPause == 0 && !istHalbzeitPause)
                 {
                         StartTimerHalbzeitPause = millis() + TimerHalbzeitPause * 1000;
-                        istHalbzeitPause=1;
+                        istHalbzeitPause = true;
                 }
-
 
                 langesHupen=1;       //Abhupen
         }                                            // Spiel zu ende - Abhupen und reset
@@ -224,17 +223,17 @@ void loop()
 
         //if ((digitalRead(2) == 0 && LangesHupenStatus[1]==0 && LangesHupenStatus[2]==0 && HupStatus[1]==0 && HupStatus[2]==0)||( digitalRead(3) == 0 && LangesHupenStatus[0]==0 && LangesHupenStatus[2]==0 && HupStatus[0]==0 && HupStatus[2]==0) || ( digitalRead(4) == 0 && LangesHupenStatus[1]==0 && LangesHupenStatus[0]==0 && HupStatus[1]==0 && HupStatus[0]==0)) // Hupe hupen lassen bei drücken eines Knopfes
         //if ((digitalRead(2) == 0 )||( digitalRead(3) == 0 ) || ( digitalRead(4) == 0 )) // Hupe hupen lassen bei drücken eines Knopfes
-        if (DrueckerSpielleiter == 1 && HupStatus[1] < 2 && HupStatus[2] < 2)
+        if (DrueckerSpielleiter && HupStatus[1] < 2 && HupStatus[2] < 2)
         {
           digitalWrite(PinHorn, LOW);
           zeigWerGehuptHat('a');
         }
-        else if (DrueckerUW1 == 1  && HupStatus[0] < 2 && HupStatus[2] < 2)
+        else if (DrueckerUW1 && HupStatus[0] < 2 && HupStatus[2] < 2)
         {
           digitalWrite(PinHorn, LOW);
           zeigWerGehuptHat('b');
         }
-        else if (DrueckerUW2 == 1 && HupStatus[1] < 2 && HupStatus[0] < 2)
+        else if (DrueckerUW2 && HupStatus[1] < 2 && HupStatus[0] < 2)
         {
           digitalWrite(PinHorn, LOW);
           zeigWerGehuptHat('c');
@@ -244,7 +243,7 @@ void loop()
                 digitalWrite(PinHorn, HIGH);
         }                                                               // Hupe hupen lassen bei drücken eines Knopfes
 
-        if (Stop == 0 && istHalbzeitPause==0)                      // Wenn Spiel läuft Abhupen suchen (zwei kurze Hupsignale)
+        if (Stop == 0 && !istHalbzeitPause)                      // Wenn Spiel läuft Abhupen suchen (zwei kurze Hupsignale)
         {
                 ZweiSignale(0, DrueckerSpielleiter);
                 ZweiSignale(1, DrueckerUW1);
@@ -253,7 +252,7 @@ void loop()
         // Wenn Spiel läuft, Abhupen suchen (zwei kurze Hupsignale)
 
 
-        if ((Stop != 0 || DurchlaufendeSpielzeit==1) && istHalbzeitPause==0)              // Wenn nicht Spiel läuft oder durchlaufende Spielzeit(Strafwurf beginnt) langes Hupen suchen
+        if ((Stop != 0 || DurchlaufendeSpielzeit) && !istHalbzeitPause)              // Wenn nicht Spiel läuft oder durchlaufende Spielzeit(Strafwurf beginnt) langes Hupen suchen
         {
                 LangesSignal(0, DrueckerSpielleiter);
                 LangesSignal(1, DrueckerUW1);
