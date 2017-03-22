@@ -11,6 +11,7 @@
 //       6x LCD
 
 #ifndef config_h
+#include "Arduino.h" // provides A0
 #include "config.h"
 #endif
 
@@ -18,10 +19,18 @@
 #define constants_h
 
 // Pins for UI buttons
+#if DIGITAL_BUTTONS
+// UNO
 const int PinButtonReset = 14;
 const int PinButtonSetup = 15;
 const int PinButtonPlus = 16;
 const int PinButtonMinus = 17;
+#endif
+
+#if ANALOG_BUTTONS
+// MEGA2560
+const int PinAnalogButtons = A0;
+#endif
 
 // Pins for buttons and horn
 #if BOARD_UNO
@@ -40,6 +49,7 @@ const int PinHorn = 25;
 
 // Pins for LED display (LedControl)
 #if OUTPUT_LED
+// UNO
 const int PinLedDout = 12;
 const int PinLedClk = 11;
 const int PinLedCs = 10;
@@ -48,10 +58,9 @@ const int LedNumDevices = 1;
 
 // Pins for LCD display (LiquidCrystal)
 #if OUTPUT_LCD
+// MEGA2560
 // RW is tied to GND
 // data pins 0-3 are not used
-
-#if BOARD_MEGA2560
 const int PinLcdRs = 8;
 const int PinLcdEnable = 9;
 const int PinLcdD4 = 4;
@@ -60,19 +69,9 @@ const int PinLcdD6 = 6;
 const int PinLcdD7 = 7;
 #endif
 
-#if BOARD_UNO
-const int PinLcdRs = 11;
-const int PinLcdEnable = 12;
-const int PinLcdD4 = 9;
-const int PinLcdD5 = 8;
-const int PinLcdD6 = 7;
-const int PinLcdD7 = 6;
-#endif
-
-#endif
-
 // Pins for Bluetooth module
 #if OUTPUT_BLUETOOTH
+// UNO
 const int PinBluetoothRx = 9;
 const int PinBluetoothTx = 8;
 #endif
@@ -90,4 +89,3 @@ enum SetupStates
 };
 
 #endif
-//test

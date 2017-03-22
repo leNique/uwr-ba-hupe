@@ -118,7 +118,8 @@ void setup()
         // Print a message to the LCD.
         lcd.print("uwr-ba-hupe     ");
         lcd.setCursor(0, 1);
-        lcd.print("star tet.");
+        lcd.print("startet...");
+        delay(500);
         #endif
 
         #if OUTPUT_BLUETOOTH
@@ -139,10 +140,15 @@ void setup()
         pinMode(PinHorn, OUTPUT);   // Hupe
         digitalWrite(PinHorn, HIGH);
 
+        #if DIGITAL_BUTTONS
         pinMode(PinButtonReset, INPUT_PULLUP); //Knopf1
         pinMode(PinButtonSetup, INPUT_PULLUP); //Knopf2
         pinMode(PinButtonPlus, INPUT_PULLUP); //Knopf3
         pinMode(PinButtonMinus, INPUT_PULLUP); //Knopf4
+        #endif
+        #if ANALOG_BUTTONS
+        // Do not set pin mode.
+        #endif
 
         #if OUTPUT_SERIAL
         Serial.write("setup() finished\n");
