@@ -1,165 +1,160 @@
 #include "config.h"
+#include "display.h"
 
-void SetupKnoepfe()
+void SetupKnoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isButtonPlusPressed, bool isButtonMinusPressed)
 {
-        if (digitalRead(PinButtonReset) == 0 && Knopf1Timer < millis() - 500) // Reset initalisieren
+    if (isButtonResetPressed && Knopf1Timer < millis() - 500) // Reset initalisieren
+    {
+        Knopf1Timer = millis();
+        Setup = SetupStateHome;
+    }
+
+    if (isButtonSetupPressed && Knopf2Timer < millis() - 500)
+    {
+        Knopf2Timer = millis();
+
+        // New setup state, or setup finished
+        // -> clear display before writing new text
+        clearDisplay();
+
+        if (Setup < SetupStateMax)                 //Setup fortführen
         {
-                Knopf1Timer = millis();
-                Setup = SetupStateHome;
+            Setup++;
+            Knopf3beschleuniger = 0;
+            Knopf4beschleuniger = 0;
         }
 
-
-        if (digitalRead(PinButtonSetup) == 0 && Knopf2Timer < millis() - 500)
+        if (Setup == SetupStateMax)              //Setup fertig - Spiel bereit - Uhr angehalten
         {
-                Knopf2Timer = millis();
+            Start = millis();
+            TimerSpielzeit = Spieldauer;
+            TimerHalbzeitPause = HalbzeitPause;
+            Start = Start + TimerSpielzeit * 1000;
+            Stop = millis();
 
-                if (Setup < SetupStateMax)                 //Setup fortführen
-                {
-                        Setup++;
-                        Knopf3beschleuniger = 0;
-                        Knopf4beschleuniger = 0;
-                }
+            for (int i = 0; i < 6; i++)
+            {
+                Strafzeiten[i] = 0;
+            }
+            warHalbzeitPause = false;
+            istHalbzeitPause = false;
+            istStrafwurf = false;
+            StrafwurfStop = false;
 
-                if (Setup == SetupStateMax)              //Setup fertig - Spiel bereit - Uhr angehalten
-                {
-                        Start = millis();
-                        TimerSpielzeit = Spieldauer;
-                        TimerHalbzeitPause = HalbzeitPause;
-                        Start = Start + TimerSpielzeit * 1000;
-                        Stop = millis();
+            zeigSpielzeit(TimerSpielzeit);
+            clearDigit5();
+        }
+    }
 
-                        for (int i=0; i<6; i++)
-                        {Strafzeiten[i]=0;}
-                        warHalbzeitPause=0;
-                        istHalbzeitPause=0;
-                        istStrafwurf=0;
-                        StrafwurfStop=0;
-
-                        zeigSpielzeit(TimerSpielzeit);
-                        clearDigit5();
-                }
-
-
+    if (isButtonPlusPressed && Knopf3Timer < millis() - 500)
+    {
+        Knopf3Timer = millis();
+        if (Knopf3beschleuniger < 6)
+        {
+            Knopf3beschleuniger++;
         }
 
-        if (digitalRead(PinButtonPlus) == 0 && Knopf3Timer < millis() - 500)
+        switch (Setup)
         {
-                Knopf3Timer = millis();
-                if (Knopf3beschleuniger < 6)
-                {
-                        Knopf3beschleuniger++;
-                }
-
-                if (Setup == SetupStateSpieldauer)
-                {
-                        Spieldauer = Spieldauer + beschleunigerSchrittweite[Knopf3beschleuniger];
-                }
-                if (Setup == SetupStateStrafzeit)
-                {
-                        Strafzeit = Strafzeit + beschleunigerSchrittweite[Knopf3beschleuniger];
-                }
-                if (Setup == SetupStateStrafwurf)
-                {
-                        Strafwurf = Strafwurf + beschleunigerSchrittweite[Knopf3beschleuniger];
-                }
-                if (Setup == SetupStateDurchlaufendeSpielzeit)
-                {
-                        DurchlaufendeSpielzeit = 1;
-                        durchlaufendeZeitStop = 1;
-                }
-                if (Setup == SetupStateHalbzeitPause)
-                {
-                        HalbzeitPause = HalbzeitPause + beschleunigerSchrittweite[Knopf3beschleuniger];
-                }
-
+            case SetupStateSpieldauer:
+                Spieldauer += beschleunigerSchrittweite[Knopf3beschleuniger];
+                break;
+            case SetupStateStrafzeit:
+                Strafzeit += beschleunigerSchrittweite[Knopf3beschleuniger];
+                break;
+            case SetupStateStrafwurf:
+                Strafwurf += beschleunigerSchrittweite[Knopf3beschleuniger];
+                break;
+            case SetupStateDurchlaufendeSpielzeit:
+                DurchlaufendeSpielzeit = !DurchlaufendeSpielzeit;
+                durchlaufendeZeitStop = DurchlaufendeSpielzeit;
+                break;
+            case SetupStateHalbzeitPause:
+                HalbzeitPause += beschleunigerSchrittweite[Knopf3beschleuniger];
+                break;
         }
-        if (Knopf3Timer < millis() - 510)
+    }
+    if (Knopf3Timer < millis() - 510)
+    {
+        Knopf3beschleuniger = 0;
+    }
+
+    if (isButtonMinusPressed && Knopf4Timer < millis() - 500)
+    {
+        Knopf4Timer = millis();
+        if (Knopf4beschleuniger < 6)
         {
-                Knopf3beschleuniger = 0;
+            Knopf4beschleuniger++;
         }
 
-        if (digitalRead(PinButtonMinus) == 0 && Knopf4Timer < millis() - 500)
+        switch (Setup)
         {
-                Knopf4Timer = millis();
-                if (Knopf4beschleuniger < 6)
-                {
-                        Knopf4beschleuniger++;
-                }
-
-                if (Setup == SetupStateSpieldauer && Spieldauer - beschleunigerSchrittweite[Knopf4beschleuniger] > 0)
-                {
-                        Spieldauer = Spieldauer - beschleunigerSchrittweite[Knopf4beschleuniger];
-                }
-                if (Setup == SetupStateStrafzeit && Strafzeit - beschleunigerSchrittweite[Knopf4beschleuniger] > 0)
-                {
-                        Strafzeit = Strafzeit - beschleunigerSchrittweite[Knopf4beschleuniger];
-                }
-                if (Setup == SetupStateStrafwurf && Strafwurf - beschleunigerSchrittweite[Knopf4beschleuniger] > 0)
-                {
-                        Strafwurf = Strafwurf - beschleunigerSchrittweite[Knopf4beschleuniger];
-                }
-                if (Setup == SetupStateDurchlaufendeSpielzeit)
-                {
-                        DurchlaufendeSpielzeit = 0;
-                        durchlaufendeZeitStop = 0;
-                }
-                if (Setup == SetupStateHalbzeitPause && HalbzeitPause - beschleunigerSchrittweite[Knopf4beschleuniger] > 0)
-                {
-                        HalbzeitPause = HalbzeitPause - beschleunigerSchrittweite[Knopf4beschleuniger];
-                }
-
+            case SetupStateSpieldauer:
+                Spieldauer -= beschleunigerSchrittweite[Knopf4beschleuniger];
+                if (Spieldauer < 0) Spieldauer = 0;
+                break;
+            case SetupStateStrafzeit:
+                Strafzeit -= beschleunigerSchrittweite[Knopf4beschleuniger];
+                if (Strafzeit < 0) Strafzeit = 0;
+                break;
+            case SetupStateStrafwurf:
+                Strafwurf -= beschleunigerSchrittweite[Knopf4beschleuniger];
+                if (Strafwurf < 0) Strafwurf = 0;
+                break;
+            case SetupStateDurchlaufendeSpielzeit:
+                DurchlaufendeSpielzeit = !DurchlaufendeSpielzeit;
+                durchlaufendeZeitStop = DurchlaufendeSpielzeit;
+                break;
+            case SetupStateHalbzeitPause:
+                HalbzeitPause -= beschleunigerSchrittweite[Knopf4beschleuniger];
+                if (HalbzeitPause < 0) HalbzeitPause = 0;
+                break;
         }
-        if (Knopf4Timer < millis() - 510)
-        {
-                Knopf4beschleuniger = 0;
-        }
+    }
+    if (Knopf4Timer < millis() - 510)
+    {
+        Knopf4beschleuniger = 0;
+    }
 
 
+    // Anzeige Setup
+    switch (Setup)
+    {
+        case SetupStateHome:
+            zeigSetup();
 
+            for (int i = 0; i < 6; i++) // Strafzeiten löschen falls vorhanden
+            {
+                Strafzeiten[i] = 0;
+            }
+            StrafwurfTimer = 0; // Strafwurf löschen falls vorhanden
+            istStrafwurf = false;
+            durchlaufendeZeitStop = true; // Spiel mit durchlaufender Zeit anhalten
+            break;
 
+        case SetupStateSpieldauer:
+            zeigSpielzeit(Spieldauer);
+            zeigSetupIndikator('A');
+            break;
 
-        //Anzeige Setup
-        if (Setup == SetupStateHome)
-        {
-                zeigSetup();
+        case SetupStateStrafzeit:
+            zeigSpielzeit(Strafzeit);
+            zeigSetupIndikator('B');
+            break;
 
-                for (int i = 0; i < 6; i++) // Strafzeiten löschen falls vorhanden
-                {
-                  Strafzeiten[i] = 0;
-                }
-                StrafwurfTimer = 0; // Strafwurf löschen falls vorhanden
-                istStrafwurf = 0;
-                durchlaufendeZeitStop = 1; // Spiel mit durchlaufender Zeit anhalten
-        }
+        case SetupStateStrafwurf:
+            zeigSpielzeit(Strafwurf);
+            zeigSetupIndikator('C');
+            break;
 
-        if (Setup == SetupStateSpieldauer)
-        {
-                zeigSpielzeit(Spieldauer);
-                zeigSetupIndikator('A');
-        }
+        case SetupStateDurchlaufendeSpielzeit:
+            zeigSetupDurchlaufendeSpielzeit(DurchlaufendeSpielzeit);
+            zeigSetupIndikator('D');
+            break;
 
-        if (Setup == SetupStateStrafzeit)
-        {
-                zeigSpielzeit(Strafzeit);
-                zeigSetupIndikator('B');
-        }
-
-        if (Setup == SetupStateStrafwurf)
-        {
-                zeigSpielzeit(Strafwurf);
-                zeigSetupIndikator('C');
-        }
-
-        if (Setup == SetupStateDurchlaufendeSpielzeit)
-        {
-                zeigSetupDurchlaufendeSpielzeit(DurchlaufendeSpielzeit);
-                clearDigits234();
-                zeigSetupIndikator('D');
-        }
-
-        if (Setup == SetupStateHalbzeitPause)
-        {
-                zeigSpielzeit(HalbzeitPause);
-                zeigSetupIndikator('E');
-        }
+        case SetupStateHalbzeitPause:
+            zeigSpielzeit(HalbzeitPause);
+            zeigSetupIndikator('E');
+            break;
+    }
 }

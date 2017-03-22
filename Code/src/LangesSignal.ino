@@ -1,6 +1,6 @@
 void LangesSignal (int i, bool val)
 {
-        if ((Stop != 0 && Stop+2000<millis())|| DurchlaufendeSpielzeit == 1)    //nur ausführen wenn Zeit schon 2 Sec steht oder durchlaufende Zeit
+        if ((Stop != 0 && Stop + 2000 < millis()) || DurchlaufendeSpielzeit)    //nur ausführen wenn Zeit schon 2 Sec steht oder durchlaufende Zeit
         {
                 if (val == 1 && LangesHupenStatus[i] == 0)
                 {
@@ -24,22 +24,22 @@ void LangesSignal (int i, bool val)
                 {
                         TimerLangesHupen[i] = 0;     //LangesHupenerkannt    Uhr läuft weiter
                         LangesHupenStatus[i] = 0;
-                        if (DurchlaufendeSpielzeit == 0)
+                        if (!DurchlaufendeSpielzeit)
                         {
                                 Start = Start + millis() - Stop;
                                 Stop = 0;
                         }
 
-                        if (DurchlaufendeSpielzeit == 1 && durchlaufendeZeitStop == 1) //durchlaufende Zeit - Spiel starten
+                        if (DurchlaufendeSpielzeit && durchlaufendeZeitStop) //durchlaufende Zeit - Spiel starten
                         {
-                                durchlaufendeZeitStop = 0;
+                                durchlaufendeZeitStop = false;
                                 Start = Start + millis() - Stop;
                                 Stop = 0;
                         }
 
-                        if (StrafwurfStop == 1 && istStrafwurf == 1) //durchlaufende Zeit - Strafwurf ausführen
+                        if (StrafwurfStop && istStrafwurf) //durchlaufende Zeit - Strafwurf ausführen
                         {
-                                StrafwurfStop = 0;
+                                StrafwurfStop = false;
                         }
                 }
         }
