@@ -83,6 +83,24 @@ void clearDigits78()
   #endif
 }
 
+void clearDisplay()
+{
+  #if OUTPUT_LED
+  lc.setChar(0, 7, ' ', false); //1. Led
+  lc.setChar(0, 6, ' ', false); //2. Led
+  lc.setChar(0, 5, ' ', false); //3. Led
+  lc.setChar(0, 4, ' ', false); //4. Led
+  lc.setChar(0, 3, ' ', false); //5. Led
+  lc.setChar(0, 2, ' ', false); //6. Led
+  lc.setChar(0, 1, ' ', false); //7. Led
+  lc.setChar(0, 0, ' ', false); //8. Led
+  #endif
+  #if OUTPUT_LCD
+  lcd.setCursor(0, 1);
+  lcd.print("                ");
+  #endif
+}
+
 void zeigReset()
 {
   #if OUTPUT_LED
@@ -97,7 +115,7 @@ void zeigReset()
   #endif
   #if OUTPUT_LCD
   lcd.setCursor(0, 1);
-  lcd.print("Rese t?  ");
+  lcd.print("Reset?   <ENTER>");
   #endif
 }
 
@@ -115,7 +133,7 @@ void zeigSetup()
   #endif
   #if OUTPUT_LCD
   lcd.setCursor(0, 1);
-  lcd.print("Setu p   ");
+  lcd.print("Setup    <ENTER>");
   #endif
 }
 
@@ -125,8 +143,17 @@ void zeigSetupIndikator(char c)
   lc.setChar(0, 3, c, false); //5. Led
   #endif
   #if OUTPUT_LCD
-  lcd.setCursor(5, 1);
-  lcd.print(c);
+  lcd.setCursor(4, 1);
+  lcd.print(" ");
+  // 5 digits are used for value and space; 11 left
+  switch (c)
+  {
+    case 'A': lcd.print("Spieldauer"); break;
+    case 'B': lcd.print("Strafzeit"); break;
+    case 'C': lcd.print("Strafwurf"); break;
+    case 'D': lcd.print("Durchlaufen"); break;
+    case 'E': lcd.print("HZ-Pause"); break;
+  }
   #endif
 }
 
@@ -137,7 +164,7 @@ void zeigSetupDurchlaufendeSpielzeit(bool isDurchlaufend)
   #endif
   #if OUTPUT_LCD
   lcd.setCursor(0, 1);
-  lcd.print(isDurchlaufend ? "Ja" : "Nein");
+  lcd.print(isDurchlaufend ? "Ja  " : "Nein");
   #endif
 }
 
