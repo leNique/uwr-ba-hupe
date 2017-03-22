@@ -1,9 +1,25 @@
 #include "config.h"
 #include "display.h"
+#include "analog_buttons.h"
 
 void Knoepfe ()
 {
-        if (digitalRead(PinButtonReset) == 0 && Knopf1Timer < millis() - 1000) // Reset initalisieren
+    #if ANALOG_BUTTONS
+    int btn_id = readAnalogButton(PinAnalogButtons);
+    bool isButtonResetPressed = (btnSELECT == btn_id);
+    bool isButtonSetupPressed = (btnLEFT   == btn_id);
+    bool isButtonPlusPressed  = (btnUP     == btn_id);
+    bool isButtonMinusPressed = (btnDOWN   == btn_id);
+    #endif
+
+    #if DIGITAL_BUTTONS
+    bool isButtonResetPressed = (digitalRead(PinButtonReset) == 0);
+    bool isButtonSetupPressed = (digitalRead(PinButtonSetup) == 0);
+    bool isButtonPlusPressed  = (digitalRead(PinButtonPlus)  == 0);
+    bool isButtonMinusPressed = (digitalRead(PinButtonMinus) == 0);
+    #endif
+
+        if (isButtonResetPressed && Knopf1Timer < millis() - 1000) // Reset initalisieren
         {
                 Knopf1Timer = millis();
                 Reset = 1;
@@ -24,8 +40,7 @@ void Knoepfe ()
         }
 
 
-
-        if (digitalRead(PinButtonSetup) == 0 && Knopf2Timer < millis() - 1000) // Reset / Strafwurf
+        if (isButtonSetupPressed && Knopf2Timer < millis() - 1000) // Reset / Strafwurf
         {
                 Knopf2Timer = millis();
 
@@ -60,7 +75,7 @@ void Knoepfe ()
                 }
         }
 
-        if (digitalRead(PinButtonPlus) == 0 && Knopf3Timer < millis() - 1000) //Strafzeit
+        if (isButtonPlusPressed && Knopf3Timer < millis() - 1000) //Strafzeit
         {
                 Knopf3Timer = millis();
                 for (int i = 0; i < 6; i++)
@@ -83,7 +98,7 @@ void Knoepfe ()
                 }
         }
 
-        if (digitalRead(PinButtonMinus) == 0 && Knopf4Timer < millis() - 800)
+        if (isButtonMinusPressed && Knopf4Timer < millis() - 800)
         {
                 Knopf4Timer = millis();
 
