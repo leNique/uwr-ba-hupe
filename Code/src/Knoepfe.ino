@@ -1,24 +1,8 @@
 #include "config.h"
 #include "display.h"
-#include "analog_buttons.h"
 
-void Knoepfe()
+void Knoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isButtonPlusPressed, bool isButtonMinusPressed)
 {
-    #if ANALOG_BUTTONS
-    int btn_id = readAnalogButton(PinAnalogButtons);
-    bool isButtonResetPressed = (btnSELECT == btn_id);
-    bool isButtonSetupPressed = (btnLEFT   == btn_id);
-    bool isButtonPlusPressed  = (btnUP     == btn_id);
-    bool isButtonMinusPressed = (btnDOWN   == btn_id);
-    #endif
-
-    #if DIGITAL_BUTTONS
-    bool isButtonResetPressed = (digitalRead(PinButtonReset) == 0);
-    bool isButtonSetupPressed = (digitalRead(PinButtonSetup) == 0);
-    bool isButtonPlusPressed  = (digitalRead(PinButtonPlus)  == 0);
-    bool isButtonMinusPressed = (digitalRead(PinButtonMinus) == 0);
-    #endif
-
     if (isButtonResetPressed && Knopf1Timer < millis() - 1000) // Reset initalisieren
     {
         Knopf1Timer = millis();

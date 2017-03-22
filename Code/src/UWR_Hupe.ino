@@ -1,6 +1,7 @@
 #include <Bounce2.h>
 
 #include "config.h"
+#include "analog_buttons.h"
 #include "bluetooth.h"
 #include "display.h"
 
@@ -77,7 +78,6 @@ char BluetoothBuffer[4];
 char BluetoothTrennzeichen[]=";";
 char BluetoothString[33];
 #endif
-
 
 
 //Drücker abfragen
@@ -160,21 +160,36 @@ void setup()
 
 void loop()
 {
-        // Setup - Startprogramm
-        while (Setup < SetupStateMax)
-        {
-                SetupKnoepfe();
-        }
-        // Setup Abgeschlossen - Spiel kann beginnen
+    #if ANALOG_BUTTONS
+    int btn_id = readAnalogButton(PinAnalogButtons);
+    bool isButtonResetPressed = (btnSELECT == btn_id);
+    bool isButtonSetupPressed = (btnLEFT   == btn_id);
+    bool isButtonPlusPressed  = (btnUP     == btn_id);
+    bool isButtonMinusPressed = (btnDOWN   == btn_id);
+    #endif
+
+    #if DIGITAL_BUTTONS
+    bool isButtonResetPressed = (digitalRead(PinButtonReset) == 0);
+    bool isButtonSetupPressed = (digitalRead(PinButtonSetup) == 0);
+    bool isButtonPlusPressed  = (digitalRead(PinButtonPlus)  == 0);
+    bool isButtonMinusPressed = (digitalRead(PinButtonMinus) == 0);
+    #endif
+
+    // Setup - Startprogramm
+    while (Setup < SetupStateMax)
+    {
+        SetupKnoepfe(isButtonResetPressed, isButtonSetupPressed, isButtonPlusPressed, isButtonMinusPressed);
+    }
+    // Setup Abgeschlossen - Spiel kann beginnen
 
 
-        Knoepfe();          // Knöpfe an der Hupe werden abgefragt
-        AutomatischHupen(); // falls automatisch gehupt werden muss wird das gemacht
+    // Knöpfe an der Hupe behandeln
+    Knoepfe(isButtonResetPressed, isButtonSetupPressed, isButtonPlusPressed, isButtonMinusPressed);
 
+    // falls automatisch gehupt werden muss wird das gemacht
+    AutomatischHupen();
 
-
-DrueckerAbfragen();
-
+    DrueckerAbfragen();
 
         if (TimerSpielzeit <= 0)                         // Spiel zu ende - Abhupen, evtl. Halbzeit und reset
         {
