@@ -33,14 +33,7 @@ void UpdateTime()
 
                 if (istStrafwurf == 0)
                 {
-                        if (kleinsteStrafzeit <= 99 && AnzahlStrafzeiten != 0)
-                        {
-                                zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
-                        }
-                        if (AnzahlStrafzeiten == 0 )
-                        {
-                                clearDigits578();
-                        }
+                        zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
                 }
                 else                   // Strafwurf MODUS wird gerade ausgeführt
                 {
@@ -62,13 +55,8 @@ void UpdateTime()
                                 kurzesHupen=1;                    //kurzesHupen wird ausgeführt
 
                                 // Anzeige von Strafwurf auf Strafzeiten umstellen
-                                if (kleinsteStrafzeit <= 99 && AnzahlStrafzeiten != 0)
-                                {
-                                        zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
-                                }
+                                zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
                         }
-
-
                 }
 
                 #if OUTPUT_BLUETOOTH

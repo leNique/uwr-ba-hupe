@@ -75,12 +75,8 @@ void ZweiSignale(int i, bool val)
                         istStrafwurf = 0;
                         StrafwurfTimer = 0;
 
-                        clearDigits78();
                         // Anzeige von Strafwurf auf Strafzeiten umstellen
-                        if (kleinsteStrafzeit <= 99 && AnzahlStrafzeiten != 0)
-                        {
-                                zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
-                        }
+                        zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
                 }
 
         }
