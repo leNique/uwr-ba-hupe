@@ -24,21 +24,21 @@
 # Template #1: General project. Test it using existing `platformio.ini`.
 #
 
-# language: python
-# python:
-#     - "2.7"
-#
-# sudo: false
-# cache:
-#     directories:
-#         - "~/.platformio"
-#
-# install:
-#     - pip install -U platformio
-#
-# script:
-#     - platformio run
+language: python
+python:
+    - "2.7"
 
+# Cache PlatformIO packages using Travis CI container-based infrastructure
+sudo: false
+cache:
+    directories:
+        - "~/.platformio"
+
+install:
+    - pip install -U platformio
+
+script:
+    - platformio ci --project-conf Code/platformio.ini Code/src/
 
 #
 # Template #2: The project is intended to by used as a library with examples
