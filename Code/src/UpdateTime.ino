@@ -86,7 +86,7 @@ void UpdateTime()
                 itoa (StrafwurfTimer,BluetoothBuffer,10);
                 strcat(BluetoothString,BluetoothBuffer);
 
-                strcat(BluetoothString,";0");
+                strcat(BluetoothString,";0S");
 
                 Bluetooth.println(BluetoothString);
                 #endif
@@ -116,7 +116,7 @@ void UpdateTime()
                         #if OUTPUT_BLUETOOTH
                         itoa (TimerSpielzeit,BluetoothBuffer,10);
                         strcpy(BluetoothString,BluetoothBuffer);
-                        strcat(BluetoothString,";0;0;0;0;0;0;0;0");
+                        strcat(BluetoothString,";0;0;0;0;0;0;0;0S");
 
                         Bluetooth.println(BluetoothString);
                         #endif
@@ -127,6 +127,7 @@ void UpdateTime()
                         itoa (TimerHalbzeitPause,BluetoothBuffer,10);
                         strcpy(BluetoothString,"0;0;0;0;0;0;0;0;");
                         strcat(BluetoothString,BluetoothBuffer);
+                        strcat(BluetoothString,"S");
 
                         Bluetooth.println(BluetoothString);
                         #endif
