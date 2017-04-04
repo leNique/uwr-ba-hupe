@@ -6,6 +6,7 @@
 #if OUTPUT_BLUETOOTH
 #include <SoftwareSerial.h>
 SoftwareSerial Bluetooth(PinBluetoothRx, PinBluetoothTx);
+
 #endif
 
 #endif

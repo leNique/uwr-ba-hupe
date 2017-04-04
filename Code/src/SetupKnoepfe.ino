@@ -43,6 +43,7 @@ void SetupKnoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isB
 
             zeigSpielzeit(TimerSpielzeit);
             clearDigit5();
+            SendBluetooth();
         }
     }
 

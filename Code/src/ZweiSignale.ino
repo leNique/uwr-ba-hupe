@@ -76,6 +76,7 @@ void ZweiSignale(int i, bool val)
 
                         // Anzeige von Strafwurf auf Strafzeiten umstellen
                         zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
+                        SendBluetooth();
                 }
         }
 }

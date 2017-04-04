@@ -196,9 +196,12 @@ void zeigAnzahlStrafzeiten(int anzahl)
 void zeigStrafzeiten(int anzahl, int kuerzesteStrafzeit)
 {
     clearDigits578();
-    if (kuerzesteStrafzeit <= 99 && anzahl != 0)
+    if (anzahl>0)
     {
         zeigAnzahlStrafzeiten(anzahl);
+    }
+    if (kuerzesteStrafzeit <= 99 && anzahl != 0)
+    {
         zeigSekundenAn78(kuerzesteStrafzeit);
     }
 }
@@ -232,5 +235,19 @@ void zeigWerGehuptHat(char c)
     lcd.print(c);
     #endif
 }
+
+
+
+void zeigHalbzeit()
+{
+    #if OUTPUT_LED
+    lc.setRow(0, 2, B00110111); //  Punkt dann beginntend oben im Uhrzeigersinn
+    #endif
+    #if OUTPUT_LCD
+  //  lcd.setCursor(6, 1);
+  //  lcd.print(c);
+    #endif
+}
+
 
 #endif

@@ -60,35 +60,7 @@ void UpdateTime()
                 }
 
                 #if OUTPUT_BLUETOOTH
-                itoa (TimerSpielzeit,BluetoothBuffer,10);
-                strcpy(BluetoothString,BluetoothBuffer);
-                strcat(BluetoothString,BluetoothTrennzeichen);
-
-                itoa (Strafzeiten[0],BluetoothBuffer,10);
-                strcat(BluetoothString,BluetoothBuffer);
-                strcat(BluetoothString,BluetoothTrennzeichen);
-                itoa (Strafzeiten[1],BluetoothBuffer,10);
-                strcat(BluetoothString,BluetoothBuffer);
-                strcat(BluetoothString,BluetoothTrennzeichen);
-                itoa (Strafzeiten[2],BluetoothBuffer,10);
-                strcat(BluetoothString,BluetoothBuffer);
-                strcat(BluetoothString,BluetoothTrennzeichen);
-                itoa (Strafzeiten[3],BluetoothBuffer,10);
-                strcat(BluetoothString,BluetoothBuffer);
-                strcat(BluetoothString,BluetoothTrennzeichen);
-                itoa (Strafzeiten[4],BluetoothBuffer,10);
-                strcat(BluetoothString,BluetoothBuffer);
-                strcat(BluetoothString,BluetoothTrennzeichen);
-                itoa (Strafzeiten[5],BluetoothBuffer,10);
-                strcat(BluetoothString,BluetoothBuffer);
-                strcat(BluetoothString,BluetoothTrennzeichen);
-
-                itoa (StrafwurfTimer,BluetoothBuffer,10);
-                strcat(BluetoothString,BluetoothBuffer);
-
-                strcat(BluetoothString,";0S");
-
-                Bluetooth.println(BluetoothString);
+                SendBluetooth();
                 #endif
         }
 
@@ -111,26 +83,10 @@ void UpdateTime()
                         Start = Start + TimerSpielzeit * 1000;
                         Stop = millis();
                         zeigSpielzeit(TimerSpielzeit);
-                        clearDigits5678();
 
-                        #if OUTPUT_BLUETOOTH
-                        itoa (TimerSpielzeit,BluetoothBuffer,10);
-                        strcpy(BluetoothString,BluetoothBuffer);
-                        strcat(BluetoothString,";0;0;0;0;0;0;0;0S");
-
-                        Bluetooth.println(BluetoothString);
-                        #endif
                 }
-                else
-                {
-                        #if OUTPUT_BLUETOOTH
-                        itoa (TimerHalbzeitPause,BluetoothBuffer,10);
-                        strcpy(BluetoothString,"0;0;0;0;0;0;0;0;");
-                        strcat(BluetoothString,BluetoothBuffer);
-                        strcat(BluetoothString,"S");
-
-                        Bluetooth.println(BluetoothString);
-                        #endif
-                }
+                #if OUTPUT_BLUETOOTH
+                SendBluetooth();
+                #endif
         }
 }

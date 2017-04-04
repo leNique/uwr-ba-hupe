@@ -178,6 +178,12 @@ void loop()
     // Setup - Startprogramm
     while (Setup < SetupStateMax)
     {
+      #if DIGITAL_BUTTONS
+      bool isButtonResetPressed = (digitalRead(PinButtonReset) == LOW);
+      bool isButtonSetupPressed = (digitalRead(PinButtonSetup) == LOW);
+      bool isButtonPlusPressed  = (digitalRead(PinButtonPlus)  == LOW);
+      bool isButtonMinusPressed = (digitalRead(PinButtonMinus) == LOW);
+      #endif
         SetupKnoepfe(isButtonResetPressed, isButtonSetupPressed, isButtonPlusPressed, isButtonMinusPressed);
     }
     // Setup Abgeschlossen - Spiel kann beginnen
@@ -197,17 +203,19 @@ void loop()
                 TimerSpielzeit = Spieldauer;
                 Stop = 1;
                 nachSpielZeit = 0;
-                 if (!warHalbzeitPause)     // Strafzeiten nur löschen falls 2. Spielhälfte
+                 if (warHalbzeitPause)     // Strafzeiten nur löschen falls 2. Spielhälfte
                  {
                    for (int i=0; i<6; i++)
                    {
                      Strafzeiten[i] = 0;
                    }
-                   warHalbzeitPause = true;
+                   warHalbzeitPause = false;
+                   clearDigits5678();
                  }
                  else
                  {
-                   warHalbzeitPause = false;
+                   warHalbzeitPause = true;
+                   zeigHalbzeit();
                  }      // 2. Spielhälfte - neues Spiel beginnt
 
                 if (StartTimerHalbzeitPause == 0 && !istHalbzeitPause)
@@ -221,8 +229,6 @@ void loop()
 
         UpdateTime();                           // Anzeige akualisieren
 
-        //if ((digitalRead(2) == 0 && LangesHupenStatus[1]==0 && LangesHupenStatus[2]==0 && HupStatus[1]==0 && HupStatus[2]==0)||( digitalRead(3) == 0 && LangesHupenStatus[0]==0 && LangesHupenStatus[2]==0 && HupStatus[0]==0 && HupStatus[2]==0) || ( digitalRead(4) == 0 && LangesHupenStatus[1]==0 && LangesHupenStatus[0]==0 && HupStatus[1]==0 && HupStatus[0]==0)) // Hupe hupen lassen bei drücken eines Knopfes
-        //if ((digitalRead(2) == 0 )||( digitalRead(3) == 0 ) || ( digitalRead(4) == 0 )) // Hupe hupen lassen bei drücken eines Knopfes
         if (DrueckerSpielleiter && HupStatus[1] < 2 && HupStatus[2] < 2)
         {
           digitalWrite(PinHorn, LOW);

@@ -53,6 +53,7 @@ void Knoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isButton
                 StrafwurfTimer = Strafwurf;
                 zeigSekundenAn78(StrafwurfTimer);
             }
+            SendBluetooth();
         }
     }
 
@@ -121,5 +122,6 @@ void Knoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isButton
                 StrafwurfStop = false;
             }
         }
+        SendBluetooth();
     } //Ende ButtonMinus
 }
