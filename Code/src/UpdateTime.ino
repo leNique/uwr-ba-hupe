@@ -47,7 +47,7 @@ void UpdateTime()
                                 StrafwurfTimer--;
                                 zeigSekundenAn78(StrafwurfTimer);
                         }
-                        else
+                        if (StrafwurfTimer <= 0)                      // Die 0. Sekunde soll nicht mitgezählt werden
                         {
                                 if (nachSpielZeit == 0)
                                 { Stop = millis(); }                  // Strafwurf zuende - Zeit wird angehalten falls noch keine Nachspielzeit erreicht ist

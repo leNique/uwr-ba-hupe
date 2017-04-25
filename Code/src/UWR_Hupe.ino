@@ -210,6 +210,7 @@ void loop()
                      Strafzeiten[i] = 0;
                    }
                    warHalbzeitPause = false;
+                   TimerHalbzeitPause = 1; // Halbzeitpause auf 1 Sek stellen (Halbzeit war schon deshalb überspringen)
                    clearDigits5678();
                  }
                  else
