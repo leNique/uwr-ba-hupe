@@ -1,6 +1,6 @@
 void LangesSignal (int i, bool val)
 {
-        if ((Stop != 0 && Stop + 2000 < millis()) || DurchlaufendeSpielzeit)    //nur ausführen wenn Zeit schon 2 Sec steht oder durchlaufende Zeit
+        if ((Stop != 0 && Stop + 4000 < millis()) || DurchlaufendeSpielzeit)    //nur ausführen wenn Zeit schon 4 Sec steht oder durchlaufende Zeit
         {
                 if (val == 1 && LangesHupenStatus[i] == 0)
                 {

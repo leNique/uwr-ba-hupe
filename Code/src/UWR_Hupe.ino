@@ -212,6 +212,9 @@ void loop()
                    warHalbzeitPause = false;
                    TimerHalbzeitPause = 1; // Halbzeitpause auf 1 Sek stellen (Halbzeit war schon deshalb überspringen)
                    clearDigits5678();
+                   #if OUTPUT_BLUETOOTH
+                   SendBluetooth();               //Display auf Startzeit setzten
+                   #endif
                  }
                  else
                  {
