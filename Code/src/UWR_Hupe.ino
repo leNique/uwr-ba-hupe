@@ -87,6 +87,9 @@ bool DrueckerUW2 = true;
 unsigned long TimerDrueckerSpielleiter = 0;
 unsigned long TimerDrueckerUW1 = 0;
 unsigned long TimerDrueckerUW2 = 0;
+unsigned long BlockTimerDrueckerSpielleiter = 0;
+unsigned long BlockTimerDrueckerUW1 = 0;
+unsigned long BlockTimerDrueckerUW2 = 0;
 Bounce BounceDrueckerSpielleiter = Bounce();
 Bounce BounceDrueckerUW1 = Bounce();
 Bounce BounceDrueckerUW2 = Bounce();
@@ -233,17 +236,17 @@ void loop()
 
         UpdateTime();                           // Anzeige akualisieren
 
-        if (DrueckerSpielleiter && HupStatus[1] < 2 && HupStatus[2] < 2)
+        if (DrueckerSpielleiter)
         {
           digitalWrite(PinHorn, LOW);
           zeigWerGehuptHat('a');
         }
-        else if (DrueckerUW1 && HupStatus[0] < 2 && HupStatus[2] < 2)
+        else if (DrueckerUW1)
         {
           digitalWrite(PinHorn, LOW);
           zeigWerGehuptHat('b');
         }
-        else if (DrueckerUW2 && HupStatus[1] < 2 && HupStatus[0] < 2)
+        else if (DrueckerUW2)
         {
           digitalWrite(PinHorn, LOW);
           zeigWerGehuptHat('c');

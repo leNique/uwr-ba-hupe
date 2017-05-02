@@ -20,7 +20,7 @@ void LangesSignal (int i, bool val)
                         LangesHupenStatus[i] = 0;
                 }
 
-                if (val == 1 && LangesHupenStatus[i] == 1 && LangesHupenFehler[i] < 250 && TimerLangesHupen[i] + 450 < millis()) // 450 Millisekunden muss für langes Hupen mindestens gehupt werden
+                if (val == 1 && LangesHupenStatus[i] == 1 && LangesHupenFehler[i] < 250 && TimerLangesHupen[i] + 400 < millis()) // 400 Millisekunden muss für langes Hupen mindestens gehupt werden
                 {
                         TimerLangesHupen[i] = 0;     //LangesHupenerkannt    Uhr läuft weiter
                         LangesHupenStatus[i] = 0;
