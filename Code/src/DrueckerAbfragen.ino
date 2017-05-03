@@ -1,3 +1,7 @@
+
+#define MinimaleHupZeit    100
+#define HupeSperrZeit     2000
+
 void DrueckerAbfragen()
 {
 
@@ -7,13 +11,14 @@ void DrueckerAbfragen()
 
      // Drücker Spielleiter
 
-  if (BounceDrueckerSpielleiter.read()==0 && TimerDrueckerSpielleiter==0 && BlockTimerDrueckerUW1+2000 < millis() && BlockTimerDrueckerUW2+2000 < millis())
+  if (BounceDrueckerSpielleiter.read()==0 && TimerDrueckerSpielleiter==0 && BlockTimerDrueckerUW1 + HupeSperrZeit < millis() && BlockTimerDrueckerUW2 + HupeSperrZeit < millis())
   {
     TimerDrueckerSpielleiter=millis();
     BlockTimerDrueckerSpielleiter=millis();
+    MinimalTimerDruecker=millis();
   }
 
-  if (BounceDrueckerSpielleiter.read()==1)
+  if (BounceDrueckerSpielleiter.read()==1 && MinimalTimerDruecker + MinimaleHupZeit < millis())
   {
     TimerDrueckerSpielleiter=0;
     DrueckerSpielleiter=false;
@@ -27,13 +32,14 @@ void DrueckerAbfragen()
 
      // Drücker UW 1
 
-  if (BounceDrueckerUW1.read()==0 && TimerDrueckerUW1==0 && BlockTimerDrueckerSpielleiter+2000 < millis() && BlockTimerDrueckerUW2+2000 < millis())
+  if (BounceDrueckerUW1.read()==0 && TimerDrueckerUW1==0 && BlockTimerDrueckerSpielleiter + HupeSperrZeit < millis() && BlockTimerDrueckerUW2 + HupeSperrZeit < millis())
   {
     TimerDrueckerUW1=millis();
     BlockTimerDrueckerUW1=millis();
+    MinimalTimerDruecker=millis();
   }
 
-  if (BounceDrueckerUW1.read()==1)
+  if (BounceDrueckerUW1.read()==1 && MinimalTimerDruecker + MinimaleHupZeit < millis())
   {
     TimerDrueckerUW1=0;
     DrueckerUW1=false;
@@ -47,13 +53,14 @@ void DrueckerAbfragen()
 
      // Drücker UW 2
 
-  if (BounceDrueckerUW2.read()==0 && TimerDrueckerUW2==0 && BlockTimerDrueckerUW1+2000 < millis() && BlockTimerDrueckerSpielleiter+2000 < millis())
+  if (BounceDrueckerUW2.read()==0 && TimerDrueckerUW2==0 && BlockTimerDrueckerUW1 + HupeSperrZeit < millis() && BlockTimerDrueckerSpielleiter + HupeSperrZeit < millis())
   {
     TimerDrueckerUW2=millis();
     BlockTimerDrueckerUW2=millis();
+    MinimalTimerDruecker=millis();
   }
 
-  if (BounceDrueckerUW2.read()==1)
+  if (BounceDrueckerUW2.read()==1 && MinimalTimerDruecker + MinimaleHupZeit < millis())
   {
     TimerDrueckerUW2=0;
     DrueckerUW2=false;

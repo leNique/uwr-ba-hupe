@@ -90,6 +90,7 @@ unsigned long TimerDrueckerUW2 = 0;
 unsigned long BlockTimerDrueckerSpielleiter = 0;
 unsigned long BlockTimerDrueckerUW1 = 0;
 unsigned long BlockTimerDrueckerUW2 = 0;
+unsigned long MinimalTimerDruecker = 0;
 Bounce BounceDrueckerSpielleiter = Bounce();
 Bounce BounceDrueckerUW1 = Bounce();
 Bounce BounceDrueckerUW2 = Bounce();
