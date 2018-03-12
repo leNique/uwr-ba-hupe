@@ -75,7 +75,8 @@ void SetupKnoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isB
                 break;
         }
     }
-    if (Knopf3Timer < millis() - 510)
+    //if (Knopf3Timer < millis() - 510)
+    if (!isButtonPlusPressed)
     {
         Knopf3beschleuniger = 0;
     }
@@ -112,7 +113,8 @@ void SetupKnoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isB
                 break;
         }
     }
-    if (Knopf4Timer < millis() - 510)
+    //if (Knopf4Timer < millis() - 510)
+    if (!isButtonMinusPressed)
     {
         Knopf4beschleuniger = 0;
     }
