@@ -29,6 +29,7 @@ void SetupKnoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isB
             Start = millis();
             TimerSpielzeit = Spieldauer;
             TimerHalbzeitPause = HalbzeitPause;
+            StartTimerHalbzeitPause = 0;
             Start = Start + TimerSpielzeit * 1000;
             Stop = millis();
 
