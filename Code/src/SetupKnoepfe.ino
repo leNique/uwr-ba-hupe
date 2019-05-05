@@ -60,9 +60,17 @@ void SetupKnoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isB
         {
             case SetupStateSpieldauer:
                 Spieldauer += beschleunigerSchrittweite[Knopf3beschleuniger];
+                if (Knopf3beschleuniger==6 && Spieldauer%60!=0)
+                 {
+                   Spieldauer=Spieldauer-(Spieldauer%60);
+                 }
                 break;
             case SetupStateStrafzeit:
                 Strafzeit += beschleunigerSchrittweite[Knopf3beschleuniger];
+                if (Knopf3beschleuniger==6 && Strafzeit%60!=0)
+                 {
+                   Strafzeit=Strafzeit-(Strafzeit%60);
+                 }
                 break;
             case SetupStateStrafwurf:
                 Strafwurf += beschleunigerSchrittweite[Knopf3beschleuniger];
@@ -94,10 +102,18 @@ void SetupKnoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isB
         {
             case SetupStateSpieldauer:
                 Spieldauer -= beschleunigerSchrittweite[Knopf4beschleuniger];
+                if (Knopf4beschleuniger==6 && Spieldauer%60!=0)
+                 {
+                   Spieldauer=Spieldauer-(Spieldauer%60);
+                 }
                 if (Spieldauer < 1) Spieldauer = 1;
                 break;
             case SetupStateStrafzeit:
                 Strafzeit -= beschleunigerSchrittweite[Knopf4beschleuniger];
+                if (Knopf4beschleuniger==6 && Strafzeit%60!=0)
+                 {
+                   Strafzeit=Strafzeit-(Strafzeit%60);
+                 }
                 if (Strafzeit < 1) Strafzeit = 1;
                 break;
             case SetupStateStrafwurf:
