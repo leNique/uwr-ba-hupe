@@ -81,6 +81,10 @@ void SetupKnoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isB
                 break;
             case SetupStateHalbzeitPause:
                 HalbzeitPause += beschleunigerSchrittweite[Knopf3beschleuniger];
+                if (Knopf3beschleuniger==6 && HalbzeitPause%60!=0)
+                 {
+                   HalbzeitPause=HalbzeitPause-(HalbzeitPause%60);
+                 }
                 break;
         }
     }
@@ -126,6 +130,10 @@ void SetupKnoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isB
                 break;
             case SetupStateHalbzeitPause:
                 HalbzeitPause -= beschleunigerSchrittweite[Knopf4beschleuniger];
+                if (Knopf4beschleuniger==6 && HalbzeitPause%60!=0)
+                 {
+                   HalbzeitPause=HalbzeitPause-(HalbzeitPause%60);
+                 }
                 if (HalbzeitPause < 1) HalbzeitPause = 1;
                 break;
         }
