@@ -206,6 +206,16 @@ void zeigStrafzeiten(int anzahl, int kuerzesteStrafzeit)
     }
 }
 
+void zeigStrafwurfZeit(int StrafwurfZeitSek)
+{
+    clearDigits578();
+
+    if (StrafwurfZeitSek != 0)
+    {
+        zeigSekundenAn78(StrafwurfZeitSek);
+    }
+}
+
 void zeigSpielzeit(int spielzeit)
 {
     #if OUTPUT_LED
