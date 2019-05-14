@@ -91,4 +91,53 @@ void UpdateTime()
                 SendBluetooth();
                 #endif
         }
+
+        
+        
+        if (zeigStrafwurfZeitSek != 0)
+        {
+                if (zeigStrafwurfZeitTimer<millis()+1000)
+                {
+                        zeigStrafwurfZeit(zeigStrafwurfZeitSek);
+                }
+                else if (zeigStrafwurfZeitTimer<millis()+1500)
+                {
+                        zeigStrafwurfZeit(0);
+                }
+                else if (zeigStrafwurfZeitTimer<millis()+2500)
+                {
+                        zeigStrafwurfZeit(zeigStrafwurfZeitSek);
+                }
+                else if (zeigStrafwurfZeitTimer<millis()+3000)
+                {
+                        zeigStrafwurfZeit(0);
+                }
+                else if (zeigStrafwurfZeitTimer<millis()+4000)
+                {
+                        zeigStrafwurfZeit(zeigStrafwurfZeitSek);
+                }
+                else if (zeigStrafwurfZeitTimer<millis()+4500)
+                {
+                        zeigStrafwurfZeit(0);
+                }
+                else if (zeigStrafwurfZeitTimer<millis()+5500)
+                {
+                        zeigStrafwurfZeit(zeigStrafwurfZeitSek);
+                }
+                else if (zeigStrafwurfZeitTimer<millis()+6000)
+                {
+                        zeigStrafwurfZeit(0);
+                }
+                else if (zeigStrafwurfZeitTimer<millis()+7000)
+                {
+                        zeigStrafwurfZeit(zeigStrafwurfZeitSek);
+                }
+                else 
+                {
+                 zeigStrafwurfZeitSek=0;
+                 zeigStrafwurfZeitTimer=0;
+                 zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
+                }
+        }
+
 }
