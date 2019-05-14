@@ -75,7 +75,9 @@ void ZweiSignale(int i, bool val)
                         StrafwurfTimer = 0;
 
                         // Anzeige von Strafwurf auf Strafzeiten umstellen
-                        zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
+                        //zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
+                        zeigStrafwurfZeitSek = Strafwurf-StrafwurfTimer;
+                        zeigStrafwurfZeitTimer = millis():
                         SendBluetooth();
                 }
         }
