@@ -62,7 +62,7 @@ int HalbzeitPause = 300; // 5min Halbzeitpause
 
 bool istStrafwurf = false;
 unsigned long StrafwurfTimer = 0;
-
+unsigned long zeigStrafwurfZeitTimer = 0:
 
 int Strafzeiten[] = {0, 0, 0, 0, 0, 0};
 int kleinsteStrafzeit;
