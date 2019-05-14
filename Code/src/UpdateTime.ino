@@ -55,7 +55,9 @@ void UpdateTime()
                                 kurzesHupen = 1;                    //kurzesHupen wird ausgeführt
 
                                 // Anzeige von Strafwurf auf Strafzeiten umstellen
-                                zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
+                                //zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
+                                zeigStrafwurfZeitSek = Strafwurf-StrafwurfTimer;
+                                zeigStrafwurfZeitTimer = millis():
                         }
                 }
 
