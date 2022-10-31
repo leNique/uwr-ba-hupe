@@ -8,6 +8,7 @@
 
 unsigned long Start = 0;
 unsigned long Stop = 0;
+unsigned long StopMerker = 0;  // Timer der die Zeit beim ersten Hupenfesthält und bei unterbrechung in Stop schreibt.
 unsigned long TimerSpielzeit = 0;
 unsigned long nachSpielZeit = 0;
 
