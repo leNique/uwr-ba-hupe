@@ -32,6 +32,7 @@ void ZweiSignale(int i, bool val)
         if (val == 1 && HupStatus[i] == 1 && TimerHupen[i] < millis() - 40 && Fehler[i] < 20)
         {
                 HupStatus[i] = 2;          // Erstes Hupsignal wurde bestätigt
+                StopMerker = millis ();    //StopMerker setzen falls 2. Signal erkannt wird und kein Druchlaufen Spielzeit...
                 Fehler[i] = 0;
                 TimerHupen[i] = millis();
         }
@@ -66,7 +67,8 @@ void ZweiSignale(int i, bool val)
                 HupStatus[i] = 0;
                 if (!DurchlaufendeSpielzeit)
                 {
-                        Stop = millis(); //Zeit wird angehalten wenn keine durchlaufende Spielzeit
+                        //Stop = millis(); //Zeit wird angehalten wenn keine durchlaufende Spielzeit
+                        Stop = StopMerker; //Zeit wird angehalten aber zur am 1. Hupen erkannten Spielzeit
                 }
 
                 if (istStrafwurf)
@@ -75,7 +77,9 @@ void ZweiSignale(int i, bool val)
                         StrafwurfTimer = 0;
 
                         // Anzeige von Strafwurf auf Strafzeiten umstellen
-                        zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
+                        //zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
+                        zeigStrafwurfZeitSek = Strafwurf-StrafwurfTimer;
+                        zeigStrafwurfZeitTimer = millis():
                         SendBluetooth();
                 }
         }
