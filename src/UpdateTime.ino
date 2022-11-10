@@ -94,7 +94,7 @@ void UpdateTime()
 
         
         
-        if (zeigStrafwurfZeitSek != 0)
+        if (zeigStrafwurfZeitSek != 0)                              // Nach dem Strafwurf wird (blinkend 7sec) die für den Strafwurf benötigte Zeit angezeigt
         {
                 if (zeigStrafwurfZeitTimer<millis()+1000)
                 {
