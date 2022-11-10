@@ -57,7 +57,7 @@ void UpdateTime()
                                 // Anzeige von Strafwurf auf Strafzeiten umstellen
                                 //zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
                                 zeigStrafwurfZeitSek = Strafwurf-StrafwurfTimer;
-                                zeigStrafwurfZeitTimer = millis():
+                                zeigStrafwurfZeitTimer = millis();
                         }
                 }
 
