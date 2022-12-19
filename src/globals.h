@@ -2,7 +2,7 @@
 
 #include "config.h"
 #include "analog_buttons.h"
-#include "display.h"
+
 
 // ---- Variablen
 
