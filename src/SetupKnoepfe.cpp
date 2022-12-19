@@ -5,10 +5,7 @@
 #define SetupKnoepfe_H
 #include "SetupKnoepfe.h"
 #endif 
-#ifndef SendBluetooth_H
-#define SendBluetooth_H
-#include "SendBluetooth.h"
-#endif 
+
 
 void SetupKnoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isButtonPlusPressed, bool isButtonMinusPressed)
 {
