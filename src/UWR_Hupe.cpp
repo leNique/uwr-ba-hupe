@@ -2,7 +2,10 @@
 #define gloabals_H
 #include "globals.h"
 #endif 
-
+#ifndef Knoepfe_H
+#define Knoepfe_H
+#include "Knoepfe.h"
+#endif 
 
 unsigned long Start = 0;
 unsigned long Stop = 0;
