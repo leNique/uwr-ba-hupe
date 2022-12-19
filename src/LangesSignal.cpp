@@ -1,3 +1,8 @@
+#ifndef LangesSignal_H
+#define LangesSignal_H
+#include "LangesSignal.h"
+#endif 
+
 void LangesSignal (int i, bool val)
 {
         if ((Stop != 0 && Stop + 8000 < millis()) || DurchlaufendeSpielzeit)    //nur ausführen wenn Zeit schon 8 Sec steht oder durchlaufende Zeit
