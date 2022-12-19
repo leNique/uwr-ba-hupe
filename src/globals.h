@@ -2,7 +2,6 @@
 
 #include "config.h"
 #include "analog_buttons.h"
-#include "bluetooth.h"
 #include "display.h"
 
 // ---- Variablen
@@ -82,6 +81,7 @@ extern char BluetoothTrennzeichen[2];
 extern char BluetoothString[33];
 extern SoftwareSerial Bluetooth(PinBluetoothRx, PinBluetoothTx);
 #endif
+#include "bluetooth.h"
 
 
 //Drücker abfragen
