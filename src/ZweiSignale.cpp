@@ -1,5 +1,5 @@
 #include "config.h"
-#include "display.h"
+
 
 #ifndef ZweiSignale_H
 #define ZweiSignale_H
