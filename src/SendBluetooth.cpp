@@ -1,3 +1,9 @@
+#ifndef SendBluetooth_H
+#define SendBluetooth_H
+#include "SendBluetooth.h"
+#endif 
+
+
 #if OUTPUT_BLUETOOTH
 
 void SendBluetooth ()
