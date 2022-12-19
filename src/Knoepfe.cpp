@@ -1,5 +1,4 @@
 #include "config.h"
-#include "display.h"
 
 
 #ifndef Knoepfe_H
