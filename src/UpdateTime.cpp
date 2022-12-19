@@ -1,3 +1,7 @@
+#ifndef display_H
+#define display_H
+#include "display.h"
+#endif 
 #ifndef UpdateTime_H
 #define UpdateTime_H
 #include "UpdateTime.h"
