@@ -1,6 +1,12 @@
 #include "config.h"
 #include "display.h"
 
+
+#ifndef gloabals_H
+#define gloabals_H
+#include "globals.h"
+#endif 
+
 void Knoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isButtonPlusPressed, bool isButtonMinusPressed)
 {
     if (isButtonResetPressed && Knopf1Timer < millis() - 1000) // Reset initalisieren
