@@ -4,6 +4,10 @@
 #define UpdateTime_H
 #include "UpdateTime.h"
 #endif 
+#ifndef SendBluetooth_H
+#define SendBluetooth_H
+#include "SendBluetooth.h"
+#endif 
 
 void UpdateTime()
 {
