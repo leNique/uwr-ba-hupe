@@ -34,7 +34,10 @@
 #define ZweiSignale_H
 #include "ZweiSignale.h"
 #endif 
-
+#ifndef display_H
+#define display_H
+#include "display.h"
+#endif 
 
 
 unsigned long Start = 0;
