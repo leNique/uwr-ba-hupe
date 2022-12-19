@@ -110,6 +110,7 @@ unsigned long StartTimerHalbzeitPause = 0;
 char BluetoothBuffer[4];
 char BluetoothTrennzeichen[] = ";";
 char BluetoothString[33];
+SoftwareSerial Bluetooth(PinBluetoothRx, PinBluetoothTx);
 #endif
 
 
