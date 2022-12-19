@@ -3,4 +3,4 @@
 #include "globals.h"
 #endif 
 
-void AutomatischHupen ()
+void AutomatischHupen ();
