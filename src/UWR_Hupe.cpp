@@ -6,6 +6,36 @@
 #define Knoepfe_H
 #include "Knoepfe.h"
 #endif 
+#ifndef AutomatischHupen_H
+#define AutomatischHupen_H
+#include "AutomatischHupen.h"
+#endif 
+#ifndef DrueckerAbfragen_H
+#define DrueckerAbfragen_H
+#include "DrueckerAbfragen.h"
+#endif 
+#ifndef LangesSignal_H
+#define LangesSignal_H
+#include "LangesSignal.h"
+#endif 
+#ifndef SendBluetooth_H
+#define SendBluetooth_H
+#include "SendBluetooth.h"
+#endif 
+#ifndef SetupKnoepfe_H
+#define SetupKnoepfe_H
+#include "SetupKnoepfe.h"
+#endif 
+#ifndef UpdateTime_H
+#define UpdateTime_H
+#include "UpdateTime.h"
+#endif 
+#ifndef ZweiSignale_H
+#define ZweiSignale_H
+#include "ZweiSignale.h"
+#endif 
+
+
 
 unsigned long Start = 0;
 unsigned long Stop = 0;
