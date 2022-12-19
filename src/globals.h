@@ -76,6 +76,7 @@ extern unsigned long TimerHalbzeitPause;
 extern unsigned long StartTimerHalbzeitPause;
 
 #if OUTPUT_BLUETOOTH
+#include <SoftwareSerial.h>
 extern char BluetoothBuffer[4];
 extern char BluetoothTrennzeichen[2];
 extern char BluetoothString[33];
