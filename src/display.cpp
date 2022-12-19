@@ -1,5 +1,7 @@
-#ifndef display_h
-#define display_h
+#ifndef display_H
+#define display_H
+#include "display.h"
+#endif 
 
 #include "Arduino.h" // provides Serial
 #include "config.h"
@@ -255,6 +257,3 @@ void zeigHalbzeit()
   //  lcd.print(c);
     #endif
 }
-
-
-#endif
