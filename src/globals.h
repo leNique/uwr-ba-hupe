@@ -78,7 +78,7 @@ extern unsigned long StartTimerHalbzeitPause;
 
 #if OUTPUT_BLUETOOTH
 extern char BluetoothBuffer[4];
-extern char BluetoothTrennzeichen[1];
+extern char BluetoothTrennzeichen[2];
 extern char BluetoothString[33];
 #endif
 
