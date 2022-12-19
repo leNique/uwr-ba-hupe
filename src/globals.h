@@ -80,6 +80,7 @@ extern unsigned long StartTimerHalbzeitPause;
 extern char BluetoothBuffer[4];
 extern char BluetoothTrennzeichen[2];
 extern char BluetoothString[33];
+extern SoftwareSerial Bluetooth();
 #endif
 
 
