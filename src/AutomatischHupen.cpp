@@ -1,5 +1,12 @@
 #include "constants.h"
 
+
+#ifndef gloabals_H
+#define gloabals_H
+#include "globals.h"
+#endif 
+
+
 void AutomatischHupen ()
 {
         if (langesHupen>0)      //langes Abhupen (Spielende)
