@@ -1,7 +1,7 @@
 
-#ifndef gloabals_H
-#define gloabals_H
-#include "globals.h"
+#ifndef DrueckerAbfragen_H
+#define DrueckerAbfragen_H
+#include "DrueckerAbfragen.h"
 #endif 
 
 
