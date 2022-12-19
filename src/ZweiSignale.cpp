@@ -6,6 +6,10 @@
 #define ZweiSignale_H
 #include "ZweiSignale.h"
 #endif 
+#ifndef SendBluetooth_H
+#define SendBluetooth_H
+#include "SendBluetooth.h"
+#endif 
 
 void ZweiSignale(int i, bool val)
 {
