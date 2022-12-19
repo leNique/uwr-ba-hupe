@@ -2,9 +2,9 @@
 #include "display.h"
 
 
-#ifndef gloabals_H
-#define gloabals_H
-#include "globals.h"
+#ifndef Knoepfe_H
+#define Knoepfe_H
+#include "Knoepfe.h"
 #endif 
 
 void Knoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isButtonPlusPressed, bool isButtonMinusPressed)
