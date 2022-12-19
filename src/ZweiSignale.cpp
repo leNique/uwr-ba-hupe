@@ -2,6 +2,11 @@
 #include "bluetooth.h"
 #include "display.h"
 
+#ifndef ZweiSignale_H
+#define ZweiSignale_H
+#include "ZweiSignale.h"
+#endif 
+
 void ZweiSignale(int i, bool val)
 {
         if (val == 1)
