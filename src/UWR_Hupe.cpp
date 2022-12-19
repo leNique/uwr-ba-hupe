@@ -113,6 +113,11 @@ char BluetoothString[33];
 SoftwareSerial Bluetooth(PinBluetoothRx, PinBluetoothTx);
 #endif
 
+#if OUTPUT_LED
+#include "LedControl.h"
+LedControl lc = LedControl(PinLedDout, PinLedClk, PinLedCs, LedNumDevices);
+#endif
+
 
 //Drücker abfragen
 bool DrueckerSpielleiter = true;
