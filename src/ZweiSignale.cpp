@@ -1,5 +1,4 @@
 #include "config.h"
-#include "bluetooth.h"
 #include "display.h"
 
 #ifndef ZweiSignale_H
