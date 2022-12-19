@@ -1,4 +1,10 @@
 
+#ifndef gloabals_H
+#define gloabals_H
+#include "globals.h"
+#endif 
+
+
 #define MinimaleHupZeit    100
 #define HupeSperrZeit     2000
 
