@@ -1,9 +1,9 @@
 #include "constants.h"
 
 
-#ifndef gloabals_H
-#define gloabals_H
-#include "globals.h"
+#ifndef AutomatischHupen_H
+#define AutomatischHupen_H
+#include "AutomatischHupen.h"
 #endif 
 
 
