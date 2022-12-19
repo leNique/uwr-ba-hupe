@@ -8,10 +8,7 @@
 #include "LiquidCrystal.h"
 LiquidCrystal lcd(PinLcdRs, PinLcdEnable, PinLcdD4, PinLcdD5, PinLcdD6, PinLcdD7);
 #endif
-#if OUTPUT_LED
-#include "LedControl.h"
-LedControl lc = LedControl(PinLedDout, PinLedClk, PinLedCs, LedNumDevices);
-#endif
+
 
 // Loescht die Zeichen 2 bis 4
 void clearDigits234()
