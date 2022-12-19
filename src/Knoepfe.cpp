@@ -1,6 +1,9 @@
 #include "config.h"
 
-
+#ifndef display_H
+#define display_H
+#include "display.h"
+#endif 
 #ifndef Knoepfe_H
 #define Knoepfe_H
 #include "Knoepfe.h"
