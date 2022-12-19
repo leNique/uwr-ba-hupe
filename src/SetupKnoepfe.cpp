@@ -1,6 +1,11 @@
 #include "config.h"
 #include "display.h"
 
+#ifndef SetupKnoepfe_H
+#define SetupKnoepfe_H
+#include "SetupKnoepfe.h"
+#endif 
+
 void SetupKnoepfe(bool isButtonResetPressed, bool isButtonSetupPressed, bool isButtonPlusPressed, bool isButtonMinusPressed)
 {
     if (isButtonResetPressed && Knopf1Timer < millis() - 500) // Reset initalisieren
