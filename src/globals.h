@@ -84,6 +84,11 @@ extern SoftwareSerial Bluetooth;
 #endif
 
 
+#if OUTPUT_LED
+#include "LedControl.h"
+extern LedControl lc;
+#endif
+
 
 //Drücker abfragen
 extern bool DrueckerSpielleiter;
