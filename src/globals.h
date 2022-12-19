@@ -82,7 +82,7 @@ extern char BluetoothTrennzeichen[2];
 extern char BluetoothString[33];
 extern SoftwareSerial Bluetooth(PinBluetoothRx, PinBluetoothTx);
 #endif
-#include "bluetooth.h"
+
 
 
 //Drücker abfragen
