@@ -1,5 +1,10 @@
 #include "bluetooth.h"
 
+#ifndef UpdateTime_H
+#define UpdateTime_H
+#include "UpdateTime.h"
+#endif 
+
 void UpdateTime()
 {
         //TimerSpielzeit +1 ???
