@@ -1,9 +1,7 @@
-#include <Bounce2.h>
-
-#include "config.h"
-#include "analog_buttons.h"
-#include "bluetooth.h"
-#include "display.h"
+#ifndef gloabals_H
+#define gloabals_H
+#include "globals.h"
+#endif 
 
 
 unsigned long Start = 0;
