@@ -1,0 +1,24 @@
+2 Extern (violett)
+3 Extern (grau)
+4 Extern (türkis)
+5 Extern (weiß)
+
+8 Bluetooth (grün)
+9 Bluetooth (blau)
+10 Display LOAD (braun)
+11 Display CLK (orange)
+12 Display DOUT(gelb)
+
+
+A0 Knöpfe Reset (gelb)
+A1 Knöpfe Strafwurf (orange)
+A2 Knöpfe Strafzeit (weiß)
+A3 Knöpfe Zeit (rot)
+
+3.3V Bluetooth (rot)
+5V Display (rot)
+GND Knöpfe (weiß)
+GND Display (weiß)
+
+GND Spannungsversorgung (violett)
+Vin Spannungsversorgung (weiß)
