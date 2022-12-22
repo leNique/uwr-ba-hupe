@@ -3,8 +3,8 @@
 4 Extern (türkis)
 5 Extern (weiß)
 
-8 Bluetooth (grün)
-9 Bluetooth (blau)
+8 Bluetooth Tx (blau)
+9 Bluetooth Rx (grün)
 10 Display LOAD (braun)
 11 Display CLK (orange)
 12 Display DOUT(gelb)
