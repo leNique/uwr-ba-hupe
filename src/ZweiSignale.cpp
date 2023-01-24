@@ -77,6 +77,7 @@ void ZweiSignale(int i, bool val)
                 {
                         //Stop = millis(); //Zeit wird angehalten wenn keine durchlaufende Spielzeit
                         Stop = StopMerker; //Zeit wird angehalten aber zur am 1. Hupen erkannten Spielzeit
+                        StopMerker=0; // StopMerker zurücksetzen (automatisches Hupen ist wieder freigegeben)
                 }
 
                 if (istStrafwurf)
