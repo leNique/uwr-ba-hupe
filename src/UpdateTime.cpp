@@ -23,6 +23,8 @@ void UpdateTime()
                 else
                 {
                         TimerSpielzeit--;
+                        if (StopMerker==0)
+                        {AbhupenVerboten = 0;}
                 }
 
                 zeigSpielzeit(TimerSpielzeit);
