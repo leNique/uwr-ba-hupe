@@ -27,6 +27,7 @@ void ZweiSignale(int i, bool val)
                 TimerHupen[i] = 0;
                 HupStatus[i] = 0;
                 Fehler[i] = 0;
+                StopMerker=0; // StopMerker zurücksetzen (automatisches Hupen ist wieder freigegeben)
         }
 
         if ((HupStatus[i] == 1 || HupStatus[i] == 4) && val == 0) // Fehler erkannt
