@@ -43,6 +43,7 @@
 unsigned long Start = 0;
 unsigned long Stop = 0;
 unsigned long StopMerker = 0;  // Timer der die Zeit beim ersten Hupenfesthält und bei unterbrechung in Stop schreibt.
+bool AbhupenVerboten = 0; // StopMerker ist gesetzt das Spiel darf nicht automatisch abgehupt werden
 unsigned long TimerSpielzeit = 0;
 unsigned long nachSpielZeit = 0;
 
@@ -243,7 +244,7 @@ void loop()
 
     DrueckerAbfragen();
 
-        if (TimerSpielzeit <= 0)                         // Spiel zu ende - Abhupen, evtl. Halbzeit und reset
+        if (TimerSpielzeit <= 0 && AbhupenVerboten == 0)                         // Spiel zu ende - Abhupen, evtl. Halbzeit und reset
         {
                 durchlaufendeZeitStop = true; //Werte zurücksetzen
                 TimerSpielzeit = Spieldauer;
