@@ -28,6 +28,7 @@ void ZweiSignale(int i, bool val)
                 HupStatus[i] = 0;
                 Fehler[i] = 0;
                 StopMerker=0; // StopMerker zurücksetzen (automatisches Hupen ist wieder freigegeben)
+                AbhupenVerboten = 0;
         }
 
         if ((HupStatus[i] == 1 || HupStatus[i] == 4) && val == 0) // Fehler erkannt
@@ -42,6 +43,7 @@ void ZweiSignale(int i, bool val)
         {
                 HupStatus[i] = 2;          // Erstes Hupsignal wurde bestätigt
                 StopMerker = millis ();    //StopMerker setzen falls 2. Signal erkannt wird und kein Druchlaufen Spielzeit...
+                AbhupenVerboten = 1;
                 Fehler[i] = 0;
                 TimerHupen[i] = millis();
         }
