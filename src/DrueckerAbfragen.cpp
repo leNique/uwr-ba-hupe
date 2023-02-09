@@ -1,4 +1,3 @@
-
 #ifndef DrueckerAbfragen_H
 #define DrueckerAbfragen_H
 #include "DrueckerAbfragen.h"

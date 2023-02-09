@@ -16,15 +16,23 @@ void UpdateTime()
         //TimerSpielzeit +1 ???
         if ((Start - (TimerSpielzeit) * 1000) < millis() - nachSpielZeit && (Stop == 0 || (DurchlaufendeSpielzeit && !durchlaufendeZeitStop)))
         {
+//Serial.print("langesh: ");
+//Serial.print(LangesHupenFehler[2]);
                 if (istStrafwurf && TimerSpielzeit == 1)
                 {
                         nachSpielZeit = nachSpielZeit + 1000;
                 }
                 else
                 {
-                        TimerSpielzeit--;
-                        if (StopMerker==0)
-                        {AbhupenVerboten = 0;}
+                        if (TimerSpielzeit > 0)
+                        {TimerSpielzeit--;}
+
+                        if (StopMerker[0]==0 && StopMerker[1]==0 && StopMerker[2]==0)
+                        {
+                         AbhupenVerboten[0] = 0;
+                         AbhupenVerboten[1] = 0;
+                         AbhupenVerboten[2] = 0;
+                        }
                 }
 
                 zeigSpielzeit(TimerSpielzeit);
@@ -109,39 +117,39 @@ void UpdateTime()
         
         if (zeigStrafwurfZeitSek != 0)                              // Nach dem Strafwurf wird (blinkend 7sec) die für den Strafwurf benötigte Zeit angezeigt
         {
-                if (zeigStrafwurfZeitTimer<millis()+1000)
+                if (zeigStrafwurfZeitTimer+1000>millis())
                 {
                         zeigStrafwurfZeit(zeigStrafwurfZeitSek);
                 }
-                else if (zeigStrafwurfZeitTimer<millis()+1500)
+                else if (zeigStrafwurfZeitTimer+1500>millis())
                 {
                         zeigStrafwurfZeit(0);
                 }
-                else if (zeigStrafwurfZeitTimer<millis()+2500)
+                else if (zeigStrafwurfZeitTimer+2500>millis())
                 {
                         zeigStrafwurfZeit(zeigStrafwurfZeitSek);
                 }
-                else if (zeigStrafwurfZeitTimer<millis()+3000)
+                else if (zeigStrafwurfZeitTimer+3000>millis())
                 {
                         zeigStrafwurfZeit(0);
                 }
-                else if (zeigStrafwurfZeitTimer<millis()+4000)
+                else if (zeigStrafwurfZeitTimer+4000>millis())
                 {
                         zeigStrafwurfZeit(zeigStrafwurfZeitSek);
                 }
-                else if (zeigStrafwurfZeitTimer<millis()+4500)
+                else if (zeigStrafwurfZeitTimer+4500>millis())
                 {
                         zeigStrafwurfZeit(0);
                 }
-                else if (zeigStrafwurfZeitTimer<millis()+5500)
+                else if (zeigStrafwurfZeitTimer+5500>millis())
                 {
                         zeigStrafwurfZeit(zeigStrafwurfZeitSek);
                 }
-                else if (zeigStrafwurfZeitTimer<millis()+6000)
+                else if (zeigStrafwurfZeitTimer+6000>millis())
                 {
                         zeigStrafwurfZeit(0);
                 }
-                else if (zeigStrafwurfZeitTimer<millis()+7000)
+                else if (zeigStrafwurfZeitTimer+7000>millis())
                 {
                         zeigStrafwurfZeit(zeigStrafwurfZeitSek);
                 }

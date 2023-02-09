@@ -1,6 +1,5 @@
 #include "config.h"
 
-
 #ifndef ZweiSignale_H
 #define ZweiSignale_H
 #include "ZweiSignale.h"
@@ -22,13 +21,13 @@ void ZweiSignale(int i, bool val)
                 }
         }
 
-        if (TimerHupen[i] + 1000 < millis())    //Rücksetzung keine 2 Hupsignale erkannt
+        if (TimerHupen[i] + 1200 < millis())    //Rücksetzung keine 2 Hupsignale erkannt
         {
                 TimerHupen[i] = 0;
                 HupStatus[i] = 0;
                 Fehler[i] = 0;
-                StopMerker=0; // StopMerker zurücksetzen (automatisches Hupen ist wieder freigegeben)
-                AbhupenVerboten = 0;
+                StopMerker[i] = 0; // StopMerker zurücksetzen (automatisches Hupen ist wieder freigegeben)
+                AbhupenVerboten[i] = 0;
         }
 
         if ((HupStatus[i] == 1 || HupStatus[i] == 4) && val == 0) // Fehler erkannt
@@ -42,8 +41,8 @@ void ZweiSignale(int i, bool val)
         if (val == 1 && HupStatus[i] == 1 && TimerHupen[i] < millis() - 40 && Fehler[i] < 20)
         {
                 HupStatus[i] = 2;          // Erstes Hupsignal wurde bestätigt
-                StopMerker = millis ();    //StopMerker setzen falls 2. Signal erkannt wird und kein Druchlaufen Spielzeit...
-                AbhupenVerboten = 1;
+                StopMerker[i] = millis();    //StopMerker setzen falls 2. Signal erkannt wird und kein Druchlaufen Spielzeit...
+                AbhupenVerboten[i] = 1;
                 Fehler[i] = 0;
                 TimerHupen[i] = millis();
         }
@@ -79,18 +78,18 @@ void ZweiSignale(int i, bool val)
                 if (!DurchlaufendeSpielzeit)
                 {
                         //Stop = millis(); //Zeit wird angehalten wenn keine durchlaufende Spielzeit
-                        Stop = StopMerker; //Zeit wird angehalten aber zur am 1. Hupen erkannten Spielzeit
-                        StopMerker=0; // StopMerker zurücksetzen (automatisches Hupen ist wieder freigegeben)
+                        Stop = StopMerker[i]; //Zeit wird angehalten aber zur am 1. Hupen erkannten Spielzeit
+                        StopMerker[i]=0; // StopMerker zurücksetzen (automatisches Hupen ist wieder freigegeben)
                 }
 
                 if (istStrafwurf)
                 {
                         istStrafwurf = false;
-                        StrafwurfTimer = 0;
-
+                        
                         // Anzeige von Strafwurf auf Strafzeiten umstellen
                         //zeigStrafzeiten(AnzahlStrafzeiten, kleinsteStrafzeit);
                         zeigStrafwurfZeitSek = Strafwurf-StrafwurfTimer;
+                        StrafwurfTimer = 0;
                         zeigStrafwurfZeitTimer = millis();
                         SendBluetooth();
                 }

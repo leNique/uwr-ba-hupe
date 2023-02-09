@@ -1,5 +1,5 @@
-#ifndef gloabals_H
-#define gloabals_H
+#ifndef globals_H
+#define globals_H
 #include "globals.h"
 #endif 
 #ifndef Knoepfe_H
@@ -42,8 +42,8 @@
 
 unsigned long Start = 0;
 unsigned long Stop = 0;
-unsigned long StopMerker = 0;  // Timer der die Zeit beim ersten Hupenfesthält und bei unterbrechung in Stop schreibt.
-bool AbhupenVerboten = 0; // StopMerker ist gesetzt das Spiel darf nicht automatisch abgehupt werden
+unsigned long StopMerker[3] = {0};  // Timer der die Zeit beim ersten Hupenfesthält und bei unterbrechung in Stop schreibt.
+bool AbhupenVerboten[3] = {0}; // StopMerker ist gesetzt das Spiel darf nicht automatisch abgehupt werden
 unsigned long TimerSpielzeit = 0;
 unsigned long nachSpielZeit = 0;
 
@@ -244,7 +244,7 @@ void loop()
 
     DrueckerAbfragen();
 
-        if (TimerSpielzeit <= 0 && AbhupenVerboten == 0)                         // Spiel zu ende - Abhupen, evtl. Halbzeit und reset
+        if (TimerSpielzeit <= 0 && AbhupenVerboten[0] == 0 && AbhupenVerboten[1] == 0 && AbhupenVerboten[2] == 0)                         // Spiel zu ende - Abhupen, evtl. Halbzeit und reset
         {
                 durchlaufendeZeitStop = true; //Werte zurücksetzen
                 TimerSpielzeit = Spieldauer;

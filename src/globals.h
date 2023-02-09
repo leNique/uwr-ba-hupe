@@ -8,8 +8,8 @@
 
 extern unsigned long Start;
 extern unsigned long Stop;
-extern unsigned long StopMerker;  // Timer der die Zeit beim ersten Hupenfesthält und bei unterbrechung in Stop schreibt.
-extern bool AbhupenVerboten; // StopMerker ist gesetzt das Spiel darf nicht automatisch abgehupt werden
+extern unsigned long StopMerker[3];  // Timer der die Zeit beim ersten Hupenfesthält und bei unterbrechung in Stop schreibt.
+extern bool AbhupenVerboten[3]; // StopMerker ist gesetzt das Spiel darf nicht automatisch abgehupt werden
 extern unsigned long TimerSpielzeit;
 extern unsigned long nachSpielZeit;
 

@@ -1,6 +1,5 @@
 #include "constants.h"
 
-
 #ifndef AutomatischHupen_H
 #define AutomatischHupen_H
 #include "AutomatischHupen.h"
