@@ -39,7 +39,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=60105",
+                "PLATFORMIO=60106",
                 "ARDUINO_AVR_UNO",
                 "UNO",
                 "F_CPU=16000000L",
