@@ -142,6 +142,11 @@ Bounce BounceDrueckerSpielleiter = Bounce();
 Bounce BounceDrueckerUW1 = Bounce();
 Bounce BounceDrueckerUW2 = Bounce();
 
+#if LOGGING
+
+#define SD_CARD_CS_PIN D8
+#define DS1307_I2C_ADDRESS 0x68
+#endif
 
 void setup()
 {
@@ -204,6 +209,13 @@ void setup()
         #if OUTPUT_SERIAL
         Serial.write("setup() finished\n");
         #endif
+        
+        #if LOGGING
+        pinMode(SD_CARD_CS_PIN, OUTPUT);
+        SD.begin(SD_CARD_CS_PIN);
+        Wire.begin();
+        #endif        
+        
 }
 
 
