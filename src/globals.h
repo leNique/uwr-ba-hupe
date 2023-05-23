@@ -3,9 +3,11 @@
 #include "config.h"
 #include "analog_buttons.h"
 
+#if LOGGING
 #include <SparkFunDS1307RTC.h>
 #include <Wire.h>
 #include <SD.h>
+#endif
 
 
 // ---- Variablen
