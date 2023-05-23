@@ -110,6 +110,8 @@ extern Bounce BounceDrueckerSpielleiter;
 extern Bounce BounceDrueckerUW1;
 extern Bounce BounceDrueckerUW2;
 
+#if LOGGING
 extern Sd2Card card;
 extern SdVolume volume;
 extern SdFile root;
+#endif
