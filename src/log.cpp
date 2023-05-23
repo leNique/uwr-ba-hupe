@@ -3,6 +3,7 @@
 #include "log.h"
 #endif 
 
+#define DS1307_I2C_ADDRESS 0x68
 
 
 void SD_WRITE_LOG()
