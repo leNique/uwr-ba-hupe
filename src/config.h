@@ -25,7 +25,7 @@
 #define OUTPUT_LED 1
 #define OUTPUT_SERIAL 0
 
-#define LOGGING 1
+#define LOGGING 0
 
 #endif
 
