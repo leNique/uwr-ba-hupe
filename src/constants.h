@@ -76,6 +76,13 @@ const int PinBluetoothRx = 9;
 const int PinBluetoothTx = 8;
 #endif
 
+// Pins for Logging
+#if LOGGING
+#define SD_CARD_CS_PIN D8
+#define DS1307_I2C_ADDRESS 0x68
+#endif
+
+
 // States of the Setup
 enum SetupStates
 {
