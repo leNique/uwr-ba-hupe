@@ -1,6 +1,6 @@
-#ifndef display_H
-#define display_H
-#include "display.h"
+#ifndef log_H
+#define log_H
+#include "log.h"
 #endif 
 
 
@@ -41,7 +41,7 @@ void SD_WRITE_LOG()
         //ausgegeben werden.
         //Ein möglicher Fehler kann sein dass, die Datei bereits durch einen anderen 
         //Service geöffnet wurde.
-        Serial.println("Fehler beim Öffnen von text.txt.");
+        //Serial.println("Fehler beim Öffnen von text.txt.");
     }
   
   
