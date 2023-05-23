@@ -25,6 +25,8 @@
 #define OUTPUT_LED 1
 #define OUTPUT_SERIAL 0
 
+#define LOGGING 1
+
 #endif
 
 #include "constants.h"
