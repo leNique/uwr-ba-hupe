@@ -2,10 +2,12 @@
 #define globals_H
 #include "globals.h"
 #endif 
+#if LOGGING
 #ifndef log_H
 #define log_H
 #include "log.h"
 #endif 
+#endif
 #ifndef Knoepfe_H
 #define Knoepfe_H
 #include "Knoepfe.h"
