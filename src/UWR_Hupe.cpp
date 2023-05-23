@@ -144,11 +144,7 @@ Bounce BounceDrueckerSpielleiter = Bounce();
 Bounce BounceDrueckerUW1 = Bounce();
 Bounce BounceDrueckerUW2 = Bounce();
 
-#if LOGGING
 
-#define SD_CARD_CS_PIN D8
-#define DS1307_I2C_ADDRESS 0x68
-#endif
 
 void setup()
 {
