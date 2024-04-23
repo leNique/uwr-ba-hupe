@@ -79,7 +79,6 @@ const int PinBluetoothTx = 8;
 // Pins for Logging
 #if LOGGING
 #define SD_CARD_CS_PIN 6
-const int chipSelect = D4;
 #endif
 
 
