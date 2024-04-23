@@ -11,6 +11,7 @@
 const int chipSelect = D4;
 
 
+void SD_Setup();
 void SD_WRITE_LOG();
 void readDS1307time(byte *second, byte *minute, byte *hour, byte *dayOfWeek, byte *dayOfMonth, byte *month, byte *year);
 byte bcdToDec(byte val);
