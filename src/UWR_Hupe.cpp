@@ -128,6 +128,10 @@ SoftwareSerial Bluetooth(PinBluetoothRx, PinBluetoothTx);
 LedControl lc = LedControl(PinLedDout, PinLedClk, PinLedCs, LedNumDevices);
 #endif
 
+#if LOGGING
+File myFile;
+#endif
+
 
 //Drücker abfragen
 bool DrueckerSpielleiter = true;
@@ -211,6 +215,7 @@ void setup()
         #if LOGGING
         pinMode(SD_CARD_CS_PIN, OUTPUT);
         SD.begin(SD_CARD_CS_PIN);
+        myFile = SD.open("test.txt", FILE_WRITE);
         Wire.begin();
         #endif        
         
