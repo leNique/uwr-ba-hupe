@@ -15,7 +15,7 @@ A1 Knöpfe Strafwurf (orange)
 A2 Knöpfe Strafzeit (weiß)
 A3 Knöpfe Zeit (rot)
 
-3.3V Bluetooth (rot)
+5V Bluetooth (rot)
 5V Display (rot)
 GND Knöpfe (weiß)
 GND Display (weiß)
