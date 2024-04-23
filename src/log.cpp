@@ -6,21 +6,7 @@
 #define DS1307_I2C_ADDRESS 0x68
 
 
-void SD_Setup()
-{
-  // Initializing SD card...
 
-  if (!SD.begin(chipSelect)) {
-    // Serial.println("initialization failed!");
-    return;
-  }
-  // Serial.println("initialization done.");
-
-  // open the file. note that only one file can be open at a time,
-  // so you have to close this one before opening another.
-  myFile = SD.open("log.txt", FILE_WRITE);
-
-}
 
 
 
