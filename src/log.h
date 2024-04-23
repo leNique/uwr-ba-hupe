@@ -9,7 +9,7 @@
 // WeMos Micro SD Shield V1.0.0: D8
 // LOLIN Micro SD Shield V1.2.0: D4 (Default)
 const int chipSelect = D4;
-
+File myFile;
 
 void SD_Setup();
 void SD_WRITE_LOG();
