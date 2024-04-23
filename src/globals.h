@@ -115,4 +115,6 @@ extern Bounce BounceDrueckerUW2;
 extern Sd2Card card;
 extern SdVolume volume;
 extern SdFile root;
+extern File myFile;
+const int chipSelect = D4;
 #endif
